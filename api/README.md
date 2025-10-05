@@ -1,0 +1,3 @@
+CREATE DATABASE rolezito;
+CREATE USER rolezito WITH PASSWORD 'password';
+GRANT ALL PRIVILEGES ON DATABASE rolezito TO rolezito;
