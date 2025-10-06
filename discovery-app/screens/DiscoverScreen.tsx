@@ -21,6 +21,7 @@ export default function DiscoverScreen() {
   const [praAgora, setPraAgora] = useState(true); // Toggle "Pra agora?" - ligado por padrão
   const [selectedVibes, setSelectedVibes] = useState<string[]>([]); // Novo estado para vibes
   const [categoryMenuVisible, setCategoryMenuVisible] = useState(false); // Estado para controlar o menu de categoria
+  const [selectWidth, setSelectWidth] = useState(0); // Para armazenar a largura do select
   const theme = useTheme();
 
   // Categorias disponíveis
@@ -443,58 +444,67 @@ export default function DiscoverScreen() {
               {/* Seleção de categoria */}
               <View style={styles.filterSection}>
                 <Text variant="labelLarge" style={styles.sectionLabel}>Categoria</Text>
-                <Menu
-                  visible={categoryMenuVisible}
-                  onDismiss={() => setCategoryMenuVisible(false)}
-                  anchor={
-                    <TouchableOpacity
-                      style={[
-                        styles.categorySelect,
-                        selectedCategory && styles.categorySelectSelected
-                      ]}
-                      onPress={() => setCategoryMenuVisible(true)}
-                      activeOpacity={0.7}
-                    >
-                      <Text style={[
-                        styles.categorySelectText,
-                        !selectedCategory && styles.categorySelectPlaceholder
-                      ]}>
-                        {selectedCategory 
-                          ? categories.find(c => c.id === selectedCategory)?.label 
-                          : "📍 Selecione uma categoria"
-                        }
-                      </Text>
-                      <Text style={[
-                        styles.categorySelectArrow,
-                        categoryMenuVisible && styles.categorySelectArrowOpen
-                      ]}>▼</Text>
-                    </TouchableOpacity>
-                  }
-                  contentStyle={styles.categoryMenu}
-                >
-                  <Menu.Item
-                    onPress={() => {
-                      setSelectedCategory(null);
-                      setSelectedVibes([]);
-                      setCategoryMenuVisible(false);
-                    }}
-                    title="Todas as categorias"
-                    titleStyle={!selectedCategory ? styles.categoryMenuItemSelected : styles.categoryMenuItem}
-                  />
-                  <Divider />
-                  {categories.map((category) => (
+                <View style={styles.categorySelectContainer}>
+                  <Menu
+                    visible={categoryMenuVisible}
+                    onDismiss={() => setCategoryMenuVisible(false)}
+                    anchor={
+                      <TouchableOpacity
+                        style={[
+                          styles.categorySelect,
+                          selectedCategory && styles.categorySelectSelected
+                        ]}
+                        onPress={() => setCategoryMenuVisible(true)}
+                        activeOpacity={0.7}
+                        onLayout={(event) => {
+                          const { width } = event.nativeEvent.layout;
+                          setSelectWidth(width);
+                        }}
+                      >
+                        <Text style={[
+                          styles.categorySelectText,
+                          !selectedCategory && styles.categorySelectPlaceholder
+                        ]}>
+                          {selectedCategory 
+                            ? categories.find(c => c.id === selectedCategory)?.label 
+                            : "📍 Selecione uma categoria"
+                          }
+                        </Text>
+                        <Text style={[
+                          styles.categorySelectArrow,
+                          categoryMenuVisible && styles.categorySelectArrowOpen
+                        ]}>▼</Text>
+                      </TouchableOpacity>
+                    }
+                    contentStyle={[
+                      styles.categoryMenu,
+                      selectWidth > 0 && { width: selectWidth }
+                    ]}
+                  >
                     <Menu.Item
-                      key={category.id}
                       onPress={() => {
-                        setSelectedCategory(category.id);
+                        setSelectedCategory(null);
                         setSelectedVibes([]);
                         setCategoryMenuVisible(false);
                       }}
-                      title={category.label}
-                      titleStyle={selectedCategory === category.id ? styles.categoryMenuItemSelected : styles.categoryMenuItem}
+                      title="Todas as categorias"
+                      titleStyle={!selectedCategory ? styles.categoryMenuItemSelected : styles.categoryMenuItem}
                     />
-                  ))}
-                </Menu>
+                    <Divider />
+                    {categories.map((category) => (
+                      <Menu.Item
+                        key={category.id}
+                        onPress={() => {
+                          setSelectedCategory(category.id);
+                          setSelectedVibes([]);
+                          setCategoryMenuVisible(false);
+                        }}
+                        title={category.label}
+                        titleStyle={selectedCategory === category.id ? styles.categoryMenuItemSelected : styles.categoryMenuItem}
+                      />
+                    ))}
+                  </Menu>
+                </View>
               </View>
 
               {/* Seleção de estilos - apenas se uma categoria estiver selecionada */}
@@ -893,6 +903,9 @@ const styles = StyleSheet.create({
   },
 
   // Category Select Styles
+  categorySelectContainer: {
+    width: '100%',
+  },
   categorySelect: {
     backgroundColor: '#F8FAFC',
     borderRadius: 12,
@@ -900,6 +913,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderWidth: 2,
     borderColor: '#E5E7EB',
+    width: '100%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
