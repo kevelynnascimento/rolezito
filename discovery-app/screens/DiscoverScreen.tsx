@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { PlaceCard } from '@/components/PlaceCard';
 import { AdBanner } from '@/components/AdBanner';
 import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
-import { FAB, Portal, Modal, Button, Text, Chip, Snackbar, Divider, useTheme } from 'react-native-paper';
+import { FAB, Portal, Modal, Button, Text, Chip, Snackbar, Divider, useTheme, Menu, Surface } from 'react-native-paper';
 import { DiscoverHeader } from '@/components/DiscoverHeader';
 import Slider from '@react-native-community/slider';
 import SafeAreaContainer from '@/components/SafeAreaContainer';
@@ -20,6 +20,7 @@ export default function DiscoverScreen() {
   const [distance, setDistance] = useState(10);
   const [praAgora, setPraAgora] = useState(true); // Toggle "Pra agora?" - ligado por padrão
   const [selectedVibes, setSelectedVibes] = useState<string[]>([]); // Novo estado para vibes
+  const [categoryMenuVisible, setCategoryMenuVisible] = useState(false); // Estado para controlar o menu de categoria
   const theme = useTheme();
 
   // Categorias disponíveis
@@ -442,34 +443,58 @@ export default function DiscoverScreen() {
               {/* Seleção de categoria */}
               <View style={styles.filterSection}>
                 <Text variant="labelLarge" style={styles.sectionLabel}>Categoria</Text>
-                <View style={styles.categoryGrid}>
-                  {categories.map((category) => (
+                <Menu
+                  visible={categoryMenuVisible}
+                  onDismiss={() => setCategoryMenuVisible(false)}
+                  anchor={
                     <TouchableOpacity
-                      key={category.id}
                       style={[
-                        styles.categoryCard,
-                        selectedCategory === category.id && styles.categoryCardSelected
+                        styles.categorySelect,
+                        selectedCategory && styles.categorySelectSelected
                       ]}
-                      onPress={() => {
-                        if (selectedCategory === category.id) {
-                          setSelectedCategory(null);
-                          setSelectedVibes([]); // Limpa estilos ao desselecionar categoria
-                        } else {
-                          setSelectedCategory(category.id);
-                          setSelectedVibes([]); // Limpa estilos ao trocar categoria
-                        }
-                      }}
+                      onPress={() => setCategoryMenuVisible(true)}
                       activeOpacity={0.7}
                     >
                       <Text style={[
-                        styles.categoryCardText,
-                        selectedCategory === category.id && styles.categoryCardTextSelected
+                        styles.categorySelectText,
+                        !selectedCategory && styles.categorySelectPlaceholder
                       ]}>
-                        {category.label}
+                        {selectedCategory 
+                          ? categories.find(c => c.id === selectedCategory)?.label 
+                          : "📍 Selecione uma categoria"
+                        }
                       </Text>
+                      <Text style={[
+                        styles.categorySelectArrow,
+                        categoryMenuVisible && styles.categorySelectArrowOpen
+                      ]}>▼</Text>
                     </TouchableOpacity>
+                  }
+                  contentStyle={styles.categoryMenu}
+                >
+                  <Menu.Item
+                    onPress={() => {
+                      setSelectedCategory(null);
+                      setSelectedVibes([]);
+                      setCategoryMenuVisible(false);
+                    }}
+                    title="Todas as categorias"
+                    titleStyle={!selectedCategory ? styles.categoryMenuItemSelected : styles.categoryMenuItem}
+                  />
+                  <Divider />
+                  {categories.map((category) => (
+                    <Menu.Item
+                      key={category.id}
+                      onPress={() => {
+                        setSelectedCategory(category.id);
+                        setSelectedVibes([]);
+                        setCategoryMenuVisible(false);
+                      }}
+                      title={category.label}
+                      titleStyle={selectedCategory === category.id ? styles.categoryMenuItemSelected : styles.categoryMenuItem}
+                    />
                   ))}
-                </View>
+                </Menu>
               </View>
 
               {/* Seleção de estilos - apenas se uma categoria estiver selecionada */}
@@ -667,49 +692,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
 
-  // Category Grid
-  categoryGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  categoryCard: {
-    backgroundColor: '#F8FAFC',
-    borderRadius: 12,
-    paddingVertical: 12,
-    paddingHorizontal: 12,
-    borderWidth: 2,
-    borderColor: '#E5E7EB',
-    width: '48%',
-    alignItems: 'center',
-    marginBottom: 12,
-    minHeight: 52,
-    justifyContent: 'center',
-    elevation: 1,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
-  categoryCardSelected: {
-    backgroundColor: '#F4F3FF',
-    borderColor: '#A78BFA',
-    elevation: 3,
-    shadowColor: '#A78BFA',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-  },
-  categoryCardText: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#374151',
-    textAlign: 'center',
-  },
-  categoryCardTextSelected: {
-    color: '#7C5CFA',
-    // fontWeight: '600',
-  },
+
 
   // Availability Card (full width)
   availabilityCard: {
@@ -907,5 +890,72 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: '#64748B',
     fontStyle: 'italic',
+  },
+
+  // Category Select Styles
+  categorySelect: {
+    backgroundColor: '#F8FAFC',
+    borderRadius: 12,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    borderWidth: 2,
+    borderColor: '#E5E7EB',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    elevation: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+  categorySelectSelected: {
+    backgroundColor: '#F4F3FF',
+    borderColor: '#A78BFA',
+    elevation: 3,
+    shadowColor: '#A78BFA',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+  },
+  categorySelectText: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#374151',
+    flex: 1,
+  },
+  categorySelectPlaceholder: {
+    color: '#6B7280',
+    fontWeight: '400',
+  },
+  categorySelectArrow: {
+    fontSize: 12,
+    color: '#6B7280',
+    marginLeft: 8,
+    transform: [{ rotate: '0deg' }],
+  },
+  categorySelectArrowOpen: {
+    transform: [{ rotate: '180deg' }],
+    color: '#A78BFA',
+  },
+  categoryMenu: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    marginTop: 4,
+  },
+  categoryMenuItem: {
+    fontSize: 15,
+    color: '#374151',
+    fontWeight: '400',
+  },
+  categoryMenuItemSelected: {
+    fontSize: 15,
+    color: '#7C5CFA',
+    fontWeight: '600',
   },
 });
