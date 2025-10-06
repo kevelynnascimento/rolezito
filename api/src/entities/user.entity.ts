@@ -1,8 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
-import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, MinLength, IsEnum } from 'class-validator';
 import { Favorite } from './favorite.entity';
 import { Notification } from './notification.entity';
 import { Review } from './review.entity';
+import { UserRole } from '../enums/user-role.enum';
 
 @Entity('users')
 export class User {
@@ -10,26 +11,24 @@ export class User {
   id: string;
 
   @Column({ unique: true })
-  @IsNotEmpty({ message: 'Username é obrigatório' })
-  username: string;
-
-  @Column({ unique: true })
   @IsNotEmpty({ message: 'Email é obrigatório' })
+  @IsEmail({}, { message: 'Email deve ser válido' })
   email: string;
-
-  @Column()
-  @IsNotEmpty({ message: 'Nome completo é obrigatório' })
-  fullName: string;
 
   @Column()
   @MinLength(6, { message: 'Senha deve ter pelo menos 6 caracteres' })
   password: string;
 
-  @Column({ nullable: true })
-  phone?: string;
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.USER
+  })
+  @IsEnum(UserRole, { message: 'Role deve ser válido' })
+  role: UserRole;
 
-  @Column({ nullable: true })
-  avatar?: string;
+  @Column({ default: true })
+  isActive: boolean;
 
   @CreateDateColumn()
   createdAt: Date;

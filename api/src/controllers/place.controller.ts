@@ -12,13 +12,17 @@ import {
   Req,
   NotFoundError, 
   BadRequestError,
-  InternalServerError
+  InternalServerError,
+  ForbiddenError,
+  CurrentUser
 } from 'routing-controllers';
 import { OpenAPI, ResponseSchema } from 'routing-controllers-openapi';
 import { AppDataSource } from '../config/database';
 import { Place } from '../entities/place.entity';
 import { Category } from '../entities/category.entity';
+import { User } from '../entities/user.entity';
 import { AuthMiddleware, AuthenticatedRequest } from '../middleware/auth.middleware';
+import { UserRole } from '../enums/user-role.enum';
 import { 
   CreatePlaceDto, 
   UpdatePlaceDto, 
@@ -57,6 +61,7 @@ export class PlaceController {
           phone: place.phone,
           averageRating: place.averageRating || 0,
           reviewCount: place.reviewCount || 0,
+          isFeatured: place.isFeatured,
           category: {
             id: place.category.id,
             name: place.category.name,
@@ -73,8 +78,7 @@ export class PlaceController {
             createdAt: review.createdAt,
             user: {
               id: review.user.id,
-              username: review.user.username,
-              fullName: review.user.fullName
+              email: review.user.email
             }
           })) || []
         };
@@ -116,6 +120,7 @@ export class PlaceController {
         phone: place.phone,
         averageRating: place.averageRating || 0,
         reviewCount: place.reviewCount || 0,
+        isFeatured: place.isFeatured,
         category: {
           id: place.category.id,
           name: place.category.name,
@@ -132,8 +137,7 @@ export class PlaceController {
           createdAt: review.createdAt,
           user: {
             id: review.user.id,
-            username: review.user.username,
-            fullName: review.user.fullName
+            email: review.user.email
           }
         })) || []
       };
@@ -149,18 +153,24 @@ export class PlaceController {
   @HttpCode(201)
   @UseBefore(AuthMiddleware)
   @OpenAPI({ 
-    summary: 'Cria um novo lugar',
-    description: 'Cria um novo lugar no sistema (requer autenticação)',
+    summary: 'Cria um novo lugar (Promoter/Admin apenas)',
+    description: 'Cria um novo lugar no sistema. Apenas promoters e admins podem criar lugares.',
     security: [{ bearerAuth: [] }]
   })
   @ResponseSchema(PlaceResponseDto, { statusCode: 201 })
   @ResponseSchema(ErrorResponseDto, { statusCode: 400 })
   @ResponseSchema(ErrorResponseDto, { statusCode: 401 })
+  @ResponseSchema(ErrorResponseDto, { statusCode: 403 })
   async create(
     @Body() placeData: CreatePlaceDto,
     @Req() request: AuthenticatedRequest
   ): Promise<PlaceResponseDto> {
     try {
+      // Verificar se o usuário tem permissão (promoter ou admin)
+      if (!request.user || (request.user.role !== UserRole.PROMOTER && request.user.role !== UserRole.ADMIN)) {
+        throw new ForbiddenError('Apenas promoters e admins podem criar lugares');
+      }
+
       const placeRepository = AppDataSource.getRepository(Place);
       const categoryRepository = AppDataSource.getRepository(Category);
 
@@ -193,6 +203,7 @@ export class PlaceController {
         phone: createdPlace.phone,
         averageRating: createdPlace.averageRating || 0,
         reviewCount: createdPlace.reviewCount || 0,
+        isFeatured: createdPlace.isFeatured,
         category: {
           id: createdPlace.category.id,
           name: createdPlace.category.name,
@@ -203,6 +214,81 @@ export class PlaceController {
       };
     } catch (error) {
       if (error instanceof BadRequestError || error instanceof InternalServerError) {
+        throw error;
+      }
+      throw new InternalServerError('Erro interno do servidor');
+    }
+  }
+
+  @Put('/:id/featured')
+  @UseBefore(AuthMiddleware)
+  @OpenAPI({ 
+    summary: 'Ativa/desativa destaque do lugar (Promoter/Admin apenas)',
+    description: 'Permite que promoters e admins ativem ou desativem o destaque de um lugar',
+    security: [{ bearerAuth: [] }]
+  })
+  @ResponseSchema(PlaceResponseDto)
+  @ResponseSchema(ErrorResponseDto, { statusCode: 403 })
+  @ResponseSchema(ErrorResponseDto, { statusCode: 404 })
+  async toggleFeatured(
+    @Param('id') id: string,
+    @Body() body: { isFeatured: boolean },
+    @Req() request: AuthenticatedRequest
+  ): Promise<PlaceResponseDto> {
+    try {
+      // Verificar se o usuário tem permissão (promoter ou admin)
+      if (!request.user || (request.user.role !== UserRole.PROMOTER && request.user.role !== UserRole.ADMIN)) {
+        throw new ForbiddenError('Apenas promoters e admins podem gerenciar destaques');
+      }
+
+      const placeRepository = AppDataSource.getRepository(Place);
+      
+      const place = await placeRepository.findOne({
+        where: { id },
+        relations: ['category', 'images', 'reviews', 'reviews.user']
+      });
+
+      if (!place) {
+        throw new NotFoundError('Lugar não encontrado');
+      }
+
+      // Atualizar o status de destaque
+      place.isFeatured = body.isFeatured;
+      await placeRepository.save(place);
+
+      return {
+        id: place.id,
+        name: place.name,
+        description: place.description,
+        address: place.address,
+        latitude: place.latitude,
+        longitude: place.longitude,
+        phone: place.phone,
+        averageRating: place.averageRating || 0,
+        reviewCount: place.reviewCount || 0,
+        isFeatured: place.isFeatured,
+        category: {
+          id: place.category.id,
+          name: place.category.name,
+          icon: place.category.icon
+        },
+        images: place.images?.map(img => ({
+          id: img.id,
+          url: img.url
+        })) || [],
+        reviews: place.reviews?.map(review => ({
+          id: review.id,
+          rating: review.rating,
+          comment: review.comment,
+          createdAt: review.createdAt,
+          user: {
+            id: review.user.id,
+            email: review.user.email
+          }
+        })) || []
+      };
+    } catch (error) {
+      if (error instanceof NotFoundError || error instanceof ForbiddenError) {
         throw error;
       }
       throw new InternalServerError('Erro interno do servidor');

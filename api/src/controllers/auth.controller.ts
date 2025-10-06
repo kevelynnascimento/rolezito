@@ -15,6 +15,7 @@ import { AppDataSource } from '../config/database';
 import { User } from '../entities/user.entity';
 import { RegisterDto, LoginDto, AuthResponseDto, UserResponseDto } from '../dtos/auth.dto';
 import { ErrorResponseDto } from '../dtos/common.dto';
+import { UserRole } from '../enums/user-role.enum';
 
 @JsonController('/auth')
 @OpenAPI({ tags: ['Authentication'] })
@@ -30,32 +31,30 @@ export class AuthController {
   @ResponseSchema(ErrorResponseDto, { statusCode: 400 })
   async register(@Body() registerData: RegisterDto): Promise<AuthResponseDto> {
     try {
-      const { username, email, password, fullName, phone } = registerData;
+      const { email, password, role } = registerData;
 
       const userRepository = AppDataSource.getRepository(User);
 
       // Verificar se usuário já existe
       const existingUser = await userRepository.findOne({
-        where: [{ email }, { username }]
+        where: { email }
       });
 
       if (existingUser) {
-        throw new BadRequestError('Usuário já existe');
+        throw new BadRequestError('Email já está em uso');
       }
 
       // Criar novo usuário
       const user = new User();
-      user.username = username;
       user.email = email;
-      user.fullName = fullName;
-      user.phone = phone;
       user.password = await bcrypt.hash(password, 10);
+      user.role = role || UserRole.USER;
 
       await userRepository.save(user);
 
       // Gerar token
       const token = jwt.sign(
-        { userId: user.id },
+        { userId: user.id, role: user.role },
         process.env.JWT_SECRET || 'secret',
         { expiresIn: '24h' }
       );
@@ -64,10 +63,9 @@ export class AuthController {
         message: 'Usuário criado com sucesso',
         user: {
           id: user.id,
-          username: user.username,
           email: user.email,
-          fullName: user.fullName,
-          phone: user.phone
+          role: user.role,
+          isActive: user.isActive
         },
         token
       };
@@ -89,22 +87,23 @@ export class AuthController {
   @ResponseSchema(ErrorResponseDto, { statusCode: 401 })
   async login(@Body() loginData: LoginDto): Promise<AuthResponseDto> {
     try {
-      const { emailOrUsername, password } = loginData;
+      const { email, password } = loginData;
 
       const userRepository = AppDataSource.getRepository(User);
       const user = await userRepository.findOne({ 
-        where: [
-          { email: emailOrUsername },
-          { username: emailOrUsername }
-        ]
+        where: { email }
       });
 
       if (!user || !await bcrypt.compare(password, user.password)) {
         throw new BadRequestError('Credenciais inválidas');
       }
 
+      if (!user.isActive) {
+        throw new BadRequestError('Usuário desativado');
+      }
+
       const token = jwt.sign(
-        { userId: user.id },
+        { userId: user.id, role: user.role },
         process.env.JWT_SECRET || 'secret',
         { expiresIn: '24h' }
       );
@@ -113,11 +112,9 @@ export class AuthController {
         message: 'Login realizado com sucesso',
         user: {
           id: user.id,
-          username: user.username,
           email: user.email,
-          fullName: user.fullName,
-          phone: user.phone,
-          avatar: user.avatar
+          role: user.role,
+          isActive: user.isActive
         },
         token
       };

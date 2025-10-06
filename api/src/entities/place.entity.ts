@@ -53,6 +53,9 @@ export class Place {
   @Column({ default: 0 })
   reviewCount: number;
 
+  @Column({ default: false })
+  isFeatured: boolean;
+
   @Column()
   categoryId: string;
 

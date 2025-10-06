@@ -87,6 +87,7 @@ export class PlaceResponseDto {
   phone?: string;
   averageRating: number;
   reviewCount: number;
+  isFeatured: boolean;
   distance?: number;
   category: {
     id: string;
@@ -104,8 +105,7 @@ export class PlaceResponseDto {
     createdAt: Date;
     user: {
       id: string;
-      username: string;
-      fullName: string;
+      email: string;
     };
   }>;
 }
