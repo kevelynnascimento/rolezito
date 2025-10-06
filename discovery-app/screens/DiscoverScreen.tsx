@@ -586,7 +586,7 @@ export default function DiscoverScreen() {
                 labelStyle={styles.applyButtonLabel}
                 onPress={() => setFilterVisible(false)}
               >
-                Aplicar {getActiveFilters().length > 0 ? `(${getActiveFilters().length + (praAgora ? 1 : 0)})` : 'Filtros'}
+                Buscar
               </Button>
             </View>
           </Modal>
@@ -629,16 +629,16 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     backgroundColor: '#fff',
-    marginHorizontal: 16,
-    marginVertical: 24,
-    borderRadius: 16,
-    elevation: 2,
+    marginHorizontal: 8,
+    marginVertical: 16,
+    borderRadius: 20,
+    elevation: 4,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    maxHeight: '90%',
-    minHeight: '60%',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    maxHeight: '95%',
+    minHeight: '85%',
     flexDirection: 'column',
   },
   
@@ -647,11 +647,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 24,
+    paddingHorizontal: 20,
     paddingTop: 20,
     paddingBottom: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#F3F4F6',
+    borderBottomColor: '#E5E7EB',
+    backgroundColor: '#FAFBFC',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   modalTitle: {
     fontSize: 18,
@@ -681,18 +684,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   modalScrollContent: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 20,
+    paddingTop: 16,
     paddingBottom: 16,
   },
   // Filter Sections
   filterSection: {
-    marginTop: 8,
-    marginBottom: 24,
+    marginTop: 4,
+    marginBottom: 20,
   },
   sectionLabel: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#374151',
+    color: '#1F2937',
     marginBottom: 8,
   },
   sectionSubLabel: {
@@ -747,6 +751,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     gap: 8,
+    justifyContent: 'flex-start',
   },
   styleChip: {
     marginRight: 0,
@@ -754,18 +759,32 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8FAFC',
     borderWidth: 1,
     borderColor: '#E5E7EB',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    elevation: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.08,
+    shadowRadius: 2,
   },
   styleChipSelected: {
     backgroundColor: '#F4F3FF',
     borderColor: '#A78BFA',
+    elevation: 2,
+    shadowColor: '#A78BFA',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.15,
+    shadowRadius: 2,
   },
   styleChipText: {
     fontSize: 13,
     color: '#374151',
+    fontWeight: '500',
   },
   styleChipTextSelected: {
     color: '#7C5CFA',
-    fontWeight: '500',
+    fontWeight: '600',
   },
 
   // Empty Styles
@@ -788,6 +807,12 @@ const styles = StyleSheet.create({
   // Slider
   sliderContainer: {
     marginTop: 8,
+    backgroundColor: '#F8FAFC',
+    borderRadius: 12,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
   },
   slider: {
     width: '100%',
@@ -796,22 +821,23 @@ const styles = StyleSheet.create({
   sliderLabels: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: -8,
+    marginTop: 4,
   },
   sliderLabel: {
-    fontSize: 12,
+    fontSize: 13,
     color: '#6B7280',
+    fontWeight: '500',
   },
 
   // Modal Footer
   modalFooter: {
-    paddingHorizontal: 24,
+    paddingHorizontal: 20,
     paddingVertical: 16,
     borderTopWidth: 1,
-    borderTopColor: '#F3F4F6',
-    backgroundColor: '#fff',
-    borderBottomLeftRadius: 16,
-    borderBottomRightRadius: 16,
+    borderTopColor: '#E5E7EB',
+    backgroundColor: '#FAFBFC',
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
   },
   applyButton: {
     backgroundColor: '#A78BFA',
@@ -832,7 +858,7 @@ const styles = StyleSheet.create({
 
   // Modal Bottom Spacer
   modalBottomSpacer: {
-    height: 20,
+    height: 24,
   },
 
   // Existing feedback styles
@@ -922,6 +948,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
+    minHeight: 56,
   },
   categorySelectSelected: {
     backgroundColor: '#F4F3FF',
