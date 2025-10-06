@@ -106,4 +106,39 @@ export const placeService = {
   getNearby: async (lat: number, lng: number, radius: number = 5): Promise<Place[]> => {
     return placeService.getAll({ lat, lng, radius });
   },
+
+  // Busca eventos que acontecem em um place específico
+  getEventsForPlace: async (placeId: string): Promise<Event[]> => {
+    return makeRequest(`/places/${placeId}/events`);
+  },
+
+  // Busca todos os eventos (places do tipo evento)
+  getAllEvents: async (filters?: PlaceFilters): Promise<Event[]> => {
+    const queryParams = new URLSearchParams();
+    queryParams.append('type', 'event'); // Filtra apenas eventos
+    
+    if (filters?.category) queryParams.append('category', filters.category);
+    if (filters?.city) queryParams.append('city', filters.city);
+    if (filters?.lat) queryParams.append('lat', filters.lat.toString());
+    if (filters?.lng) queryParams.append('lng', filters.lng.toString());
+    if (filters?.radius) queryParams.append('radius', filters.radius.toString());
+
+    const query = queryParams.toString();
+    return makeRequest(`/events${query ? `?${query}` : ''}`);
+  },
+
+  // Busca places e eventos combinados (nossa nova abordagem)
+  getPlacesAndEvents: async (filters?: PlaceFilters & { includeEvents?: boolean }): Promise<Place[]> => {
+    const queryParams = new URLSearchParams();
+    
+    if (filters?.category) queryParams.append('category', filters.category);
+    if (filters?.city) queryParams.append('city', filters.city);
+    if (filters?.lat) queryParams.append('lat', filters.lat.toString());
+    if (filters?.lng) queryParams.append('lng', filters.lng.toString());
+    if (filters?.radius) queryParams.append('radius', filters.radius.toString());
+    if (filters?.includeEvents) queryParams.append('includeEvents', 'true');
+
+    const query = queryParams.toString();
+    return makeRequest(`/places-and-events${query ? `?${query}` : ''}`);
+  },
 };

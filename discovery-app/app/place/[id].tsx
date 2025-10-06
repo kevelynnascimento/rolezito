@@ -7,10 +7,12 @@ import { Header } from '../../components/Header';
 import { CustomMapView } from '../../components/MapView';
 import SafeAreaContainer from '@/components/SafeAreaContainer';
 import ScreenContainer from '@/components/ScreenContainer';
+import { Place, PlaceType } from '@/types/place';
 
 const mockPlaces = [
 	{
 		id: '1',
+		type: 'local',
 		name: 'Bar do João',
 		category: 'Bar com música ao vivo',
 		latitude: -23.5505, // Coordenadas para Vila Madalena, São Paulo
@@ -74,43 +76,85 @@ const mockPlaces = [
 	},
 ];
 
-const upcomingEvents = [
+// Dados mockados para eventos
+const mockEvents = [
 	{
-		id: 1,
-		title: 'Show ao Vivo com Banda Local',
-		date: 'Hoje às 22h',
-		description: 'Noite especial com música brasileira e muito rock',
-		price: 'Entrada gratuita',
-		type: 'show',
-	},
-	{
-		id: 2,
-		title: 'Happy Hour Extended',
-		date: 'Amanhã às 18h',
-		description: 'Drinks pela metade do preço até às 21h',
-		price: '50% off em drinks',
-		type: 'promocao',
-	},
-	{
-		id: 3,
-		title: 'Karaokê Night',
-		date: 'Sexta às 20h',
-		description: 'Venha cantar seus sucessos favoritos',
-		price: 'R$ 15 por pessoa',
-		type: 'evento',
+		id: 'event1',
+		type: 'event',
+		name: 'Churrasquinho do Menos é Mais',
+		category: 'Evento Musical',
+		images: [
+			'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800&q=80',
+			'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80',
+			'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80',
+		],
+		rating: 4.7,
+		reviewCount: 89,
+		distance: '2.3 km',
+		eventDate: '2024-11-20',
+		eventTime: '18:00',
+		eventEndTime: '23:00',
+		eventLocation: 'Cerimonial Elegance - Bairro Nobre',
+		ticketUrl: 'https://ingresso.com/menos-e-mais-churrasco',
+		price: 'A partir de R$ 80',
+		organizer: 'Menos é Mais Produções',
+		description:
+			'Evento especial com churrasco e música do grupo Menos é Mais. Uma noite inesquecível com os maiores sucessos do pagode brasileiro!',
+		styleChips: [
+			{ label: '🎵 Música ao vivo' },
+			{ label: '🍖 Churrasco' },
+			{ label: '🎤 Pagode' },
+			{ label: '🎪 Evento especial' },
+			{ label: '🍺 Bar liberado' },
+			{ label: '📱 Check-in digital' },
+		],
+		highlights: [
+			'Grupo Menos é Mais ao vivo',
+			'Churrasco premium incluído',
+			'Bar com drinks especiais',
+			'Área VIP disponível',
+		],
+		eventInfo: {
+			doors: '17:00 - Abertura dos portões',
+			duration: '5 horas de evento',
+			ageRating: '18+',
+			dress: 'Esporte fino',
+		}
 	},
 ];
 
-const getEventIcon = (type: string) => {
-	switch (type) {
-		case 'show':
+const getEventIcon = (tag: string) => {
+	switch (tag.toLowerCase()) {
+		case 'música':
 			return '🎵';
-		case 'promocao':
+		case 'promoção':
 			return '💰';
-		case 'evento':
+		case 'entretenimento':
 			return '🎉';
+		case 'gastronomia':
+			return '🍽️';
 		default:
 			return '📅';
+	}
+};
+
+const formatEventDate = (eventDate: string, eventTime: string) => {
+	const date = new Date(eventDate);
+	const today = new Date();
+	const tomorrow = new Date(today);
+	tomorrow.setDate(tomorrow.getDate() + 1);
+	
+	const isToday = date.toDateString() === today.toDateString();
+	const isTomorrow = date.toDateString() === tomorrow.toDateString();
+	
+	if (isToday) {
+		return `Hoje às ${eventTime}`;
+	} else if (isTomorrow) {
+		return `Amanhã às ${eventTime}`;
+	} else {
+		const weekdays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+		const dayName = weekdays[date.getDay()];
+		return `${dayName} (${date.getDate()}/${date.getMonth() + 1}) às ${eventTime}`;
 	}
 };
 
@@ -124,8 +168,12 @@ export default function PlaceDetailScreen() {
 	const [userComment, setUserComment] = useState('');
 	const [ratingSnackbar, setRatingSnackbar] = useState(false);
 	const screenWidth = Dimensions.get('window').width;
-	// No real app, fetch by id
-	const place = mockPlaces[0];
+	
+	// Detecta se é evento ou local baseado no ID
+	const isEvent = String(id).startsWith('event');
+	
+	// Busca dados baseado no tipo
+	const place = isEvent ? mockEvents[0] : mockPlaces[0];
 
 	const handleScroll = (event: any) => {
 		const scrollPosition = event.nativeEvent.contentOffset.x;
@@ -459,6 +507,7 @@ export default function PlaceDetailScreen() {
 							</View>
 						</Card.Content>
 					</Card>
+
 					{/* Avaliações */}
 
 					{/* TODO: Ativar quando habilitar reviews, preciso descomentar aqui */}

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { PlaceCard } from '@/components/PlaceCard';
 import { AdBanner } from '@/components/AdBanner';
+import { Place, PlaceType } from '@/types/place';
+import { usePlacesAndEvents } from '@/hooks/usePlaceEvents';
 import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { FAB, Portal, Modal, Button, Text, Chip, Snackbar, Divider, useTheme, Menu, Surface } from 'react-native-paper';
 import { DiscoverHeader } from '@/components/DiscoverHeader';
@@ -22,7 +24,14 @@ export default function DiscoverScreen() {
   const [selectedVibes, setSelectedVibes] = useState<string[]>([]); // Novo estado para vibes
   const [categoryMenuVisible, setCategoryMenuVisible] = useState(false); // Estado para controlar o menu de categoria
   const [selectWidth, setSelectWidth] = useState(0); // Para armazenar a largura do select
+  const [selectedType, setSelectedType] = useState<PlaceType | 'all'>('all'); // Novo filtro por tipo
   const theme = useTheme();
+
+  // Busca places e eventos usando o hook
+  const { places, loading, error } = usePlacesAndEvents({
+    category: selectedCategory || undefined,
+    type: selectedType, // Filtro por tipo (local, evento ou todos)
+  });
 
   // Categorias disponíveis
   const categories = [
@@ -34,6 +43,8 @@ export default function DiscoverScreen() {
     { id: 'Hotel', label: '🛏️ Hotel' },
     { id: 'Pousada', label: '🏡 Pousada' },
     { id: 'Motel', label: '💋 Motel' },
+    { id: 'Cerimonial', label: '🎪 Cerimonial' },
+    { id: 'Evento', label: '📅 Evento' },
   ];
 
   // Estilos específicos por categoria
@@ -100,6 +111,22 @@ export default function DiscoverScreen() {
       { id: 'suites', label: '🏠 Suítes temáticas' },
       { id: 'garage', label: '🚗 Garagem privativa' },
     ],
+    'Cerimonial': [
+      { id: 'casamento', label: '💒 Casamentos' },
+      { id: 'formatura', label: '🎓 Formaturas' },
+      { id: 'aniversario', label: '🎂 Aniversários' },
+      { id: 'corporativo', label: '🏢 Eventos corporativos' },
+      { id: 'ar-livre', label: '🌳 Área ao ar livre' },
+      { id: 'salao-nobre', label: '👑 Salão nobre' },
+    ],
+    'Evento': [
+      { id: 'musica', label: '🎵 Música' },
+      { id: 'gastronomia', label: '🍽️ Gastronomia' },
+      { id: 'entretenimento', label: '🎪 Entretenimento' },
+      { id: 'cultural', label: '🎭 Cultural' },
+      { id: 'esportivo', label: '⚽ Esportivo' },
+      { id: 'promocional', label: '🎁 Promocional' },
+    ],
   };
 
   // Função para obter estilos da categoria selecionada
@@ -122,6 +149,7 @@ export default function DiscoverScreen() {
     setSelectedCategory(null);
     setSelectedVibes([]);
     setPraAgora(false);
+    setSelectedType('all');
   };
 
   // Função para remover categoria específica e limpar estilos
@@ -138,6 +166,18 @@ export default function DiscoverScreen() {
   // Função para obter os filtros ativos
   const getActiveFilters = () => {
     const filters = [];
+    
+    // Filtro de tipo
+    if (selectedType !== 'all') {
+      filters.push({
+        id: `type-${selectedType}`,
+        label: selectedType === PlaceType.LOCAL ? '📍 Locais' : '📅 Eventos',
+        type: 'placeType',
+        value: selectedType
+      });
+    }
+    
+    // Filtro de categoria
     if (selectedCategory) {
       const categoryObj = categories.find(c => c.id === selectedCategory);
       if (categoryObj) {
@@ -149,6 +189,8 @@ export default function DiscoverScreen() {
         });
       }
     }
+    
+    // Filtros de vibes
     selectedVibes.forEach(vibeId => {
       const availableStyles = getAvailableStyles();
       const vibe = availableStyles.find(v => v.id === vibeId);
@@ -164,112 +206,7 @@ export default function DiscoverScreen() {
     return filters;
   };
 
-  const places = [
-    {
-      image: "https://picsum.photos/200",
-      title: "Bar do Zeca",
-      tag: "Bar",
-      rating: 4.5,
-      distance: "0.8 km",
-      status: "Aberto" as 'Aberto',
-    },
-    {
-      image: "https://picsum.photos/200",
-      title: "Bar do João",
-      tag: "Bar",
-      rating: 4.2,
-      distance: "1.2 km",
-      status: "Fechado" as 'Fechado',
-    },
-    {
-      image: "https://picsum.photos/200",
-      title: "Restaurante da Ana",
-      tag: "Restaurante",
-      rating: 4.8,
-      distance: "2.0 km",
-      status: "Aberto" as 'Aberto',
-    },
-    {
-      image: "https://picsum.photos/200",
-      title: "Balada Top",
-      tag: "Balada",
-      rating: 4.7,
-      distance: "3.5 km",
-      status: "Aberto" as 'Aberto',
-    },
-    {
-      image: "https://picsum.photos/200",
-      title: "Balada Top",
-      tag: "Balada",
-      rating: 4.7,
-      distance: "3.5 km",
-      status: "Aberto" as 'Aberto',
-    },
-    {
-      image: "https://picsum.photos/200",
-      title: "Balada Top",
-      tag: "Balada",
-      rating: 4.7,
-      distance: "3.5 km",
-      status: "Aberto" as 'Aberto',
-    },
-    {
-      image: "https://picsum.photos/200",
-      title: "Balada Top",
-      tag: "Balada",
-      rating: 4.7,
-      distance: "3.5 km",
-      status: "Aberto" as 'Aberto',
-    },
-    {
-      image: "https://picsum.photos/200",
-      title: "Pizzaria do Italiano",
-      tag: "Pizzaria",
-      rating: 4.6,
-      distance: "1.5 km",
-      status: "Aberto" as 'Aberto',
-    },
-    {
-      image: "https://picsum.photos/200",
-      title: "Lanchonete Central",
-      tag: "Lanchonete",
-      rating: 4.3,
-      distance: "0.9 km",
-      status: "Aberto" as 'Aberto',
-    },
-    {
-      image: "https://picsum.photos/200",
-      title: "Hotel Vista Mar",
-      tag: "Hotel",
-      rating: 4.9,
-      distance: "5.2 km",
-      status: "Aberto" as 'Aberto',
-    },
-    {
-      image: "https://picsum.photos/200",
-      title: "Pousada do Centro",
-      tag: "Pousada",
-      rating: 4.4,
-      distance: "2.8 km",
-      status: "Aberto" as 'Aberto',
-    },
-    {
-      image: "https://picsum.photos/200",
-      title: "Bar Sunset",
-      tag: "Bar",
-      rating: 4.5,
-      distance: "4.1 km",
-      status: "Aberto" as 'Aberto',
-    },
-    {
-      image: "https://picsum.photos/200",
-      title: "Restaurante Gourmet",
-      tag: "Restaurante",
-      rating: 4.8,
-      distance: "3.0 km",
-      status: "Fechado" as 'Fechado',
-    },
-  ];
+  // Os places agora vêm do hook usePlacesAndEvents
 
   // Função para criar lista com anúncios intercalados
   const createListWithAds = () => {
@@ -341,6 +278,8 @@ export default function DiscoverScreen() {
                           removeCategory();
                         } else if (filter.type === 'vibe') {
                           removeVibe(filter.value);
+                        } else if (filter.type === 'placeType') {
+                          setSelectedType('all');
                         }
                       }}
                       activeOpacity={0.7}
@@ -372,30 +311,35 @@ export default function DiscoverScreen() {
         </View>
 
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
-          {createListWithAds().map((item, idx) => {
-            if (item.type === 'ad') {
-              return (
-                <AdBanner
-                  key={item.adId}
-                  adId={item.adId}
-                  onPress={handleAdPress}
-                />
-              );
-            } else {
-              return (
-                <PlaceCard
-                  key={`place-${idx}`}
-                  image={item.data.image}
-                  title={item.data.title}
-                  tag={item.data.tag}
-                  rating={item.data.rating}
-                  distance={item.data.distance}
-                  status={item.data.status}
-                  onFavorite={() => setSnackbarVisible(true)}
-                />
-              );
-            }
-          })}
+          {loading ? (
+            <View style={styles.loadingContainer}>
+              <Text style={styles.loadingText}>Carregando places e eventos...</Text>
+            </View>
+          ) : error ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>Erro: {error}</Text>
+            </View>
+          ) : (
+            createListWithAds().map((item, idx) => {
+              if (item.type === 'ad') {
+                return (
+                  <AdBanner
+                    key={item.adId}
+                    adId={item.adId}
+                    onPress={handleAdPress}
+                  />
+                );
+              } else {
+                return (
+                  <PlaceCard
+                    key={`place-${idx}`}
+                    place={item.data}
+                    onFavorite={() => setSnackbarVisible(true)}
+                  />
+                );
+              }
+            })
+          )}
         </ScrollView>
         <Portal>
           <Modal visible={filterVisible} onDismiss={() => setFilterVisible(false)} contentContainerStyle={styles.modalContainer}>
@@ -421,6 +365,60 @@ export default function DiscoverScreen() {
               contentContainerStyle={styles.modalScrollContent}
               showsVerticalScrollIndicator={false}
             >
+              {/* Filtro por tipo */}
+              <View style={styles.filterSection}>
+                <Text variant="labelLarge" style={styles.sectionLabel}>Tipo</Text>
+                <View style={styles.typeFiltersContainer}>
+                  <TouchableOpacity
+                    style={[
+                      styles.typeFilterCard,
+                      selectedType === 'all' && styles.typeFilterCardSelected
+                    ]}
+                    onPress={() => setSelectedType('all')}
+                    activeOpacity={0.7}
+                  >
+                    <Text style={[
+                      styles.typeFilterText,
+                      selectedType === 'all' && styles.typeFilterTextSelected
+                    ]}>
+                      🔍 Todos
+                    </Text>
+                  </TouchableOpacity>
+                  
+                  <TouchableOpacity
+                    style={[
+                      styles.typeFilterCard,
+                      selectedType === PlaceType.LOCAL && styles.typeFilterCardSelected
+                    ]}
+                    onPress={() => setSelectedType(PlaceType.LOCAL)}
+                    activeOpacity={0.7}
+                  >
+                    <Text style={[
+                      styles.typeFilterText,
+                      selectedType === PlaceType.LOCAL && styles.typeFilterTextSelected
+                    ]}>
+                      📍 Locais
+                    </Text>
+                  </TouchableOpacity>
+                  
+                  <TouchableOpacity
+                    style={[
+                      styles.typeFilterCard,
+                      selectedType === PlaceType.EVENT && styles.typeFilterCardSelected
+                    ]}
+                    onPress={() => setSelectedType(PlaceType.EVENT)}
+                    activeOpacity={0.7}
+                  >
+                    <Text style={[
+                      styles.typeFilterText,
+                      selectedType === PlaceType.EVENT && styles.typeFilterTextSelected
+                    ]}>
+                      📅 Eventos
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
               {/* Toggle "Pra agora?" */}
               <View style={styles.filterSection}>
                 <Text variant="labelLarge" style={styles.sectionLabel}>Disponibilidade</Text>
@@ -508,7 +506,7 @@ export default function DiscoverScreen() {
               </View>
 
               {/* Seleção de estilos - apenas se uma categoria estiver selecionada */}
-              {selectedCategory ? (
+              {selectedCategory && 
                 <View style={styles.filterSection}>
                   <Text variant="labelLarge" style={styles.sectionLabel}>
                     Estilos para {categories.find(c => c.id === selectedCategory)?.label.split(' ')[1]}
@@ -536,18 +534,7 @@ export default function DiscoverScreen() {
                     ))}
                   </View>
                 </View>
-              ) : (
-                <View style={styles.filterSection}>
-                  <Text variant="labelLarge" style={styles.sectionLabel}>
-                    Estilos
-                  </Text>
-                  <View style={styles.emptyStylesContainer}>
-                    <Text style={styles.emptyStylesText}>
-                      📍 Primeiro selecione uma categoria acima para ver os estilos disponíveis
-                    </Text>
-                  </View>
-                </View>
-              )}
+              }
 
               {/* Filtro de distância */}
               <View style={styles.filterSection}>
@@ -998,5 +985,67 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#7C5CFA',
     fontWeight: '600',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  loadingText: {
+    fontSize: 16,
+    color: '#6B7280',
+    textAlign: 'center',
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  errorText: {
+    fontSize: 16,
+    color: '#DC2626',
+    textAlign: 'center',
+  },
+  
+  // Estilos para filtros de tipo
+  typeFiltersContainer: {
+    flexDirection: 'row',
+    gap: 8,
+    marginBottom: 12,
+  },
+  typeFilterCard: {
+    flex: 1,
+    backgroundColor: '#F8FAFC',
+    borderRadius: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    borderWidth: 2,
+    borderColor: '#E5E7EB',
+    alignItems: 'center',
+    elevation: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+  typeFilterCardSelected: {
+    backgroundColor: '#F4F3FF',
+    borderColor: '#A78BFA',
+    elevation: 3,
+    shadowColor: '#A78BFA',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+  },
+  typeFilterText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#374151',
+    textAlign: 'center',
+  },
+  typeFilterTextSelected: {
+    color: '#7C5CFA',
   },
 });
