@@ -234,26 +234,6 @@ export default function PlaceDetailScreen() {
 		<SafeAreaContainer>
 			<Header
 				title={place.name}
-				rightContent={
-					<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-						<IconButton
-							icon="heart-outline"
-							onPress={() => { }}
-							size={20}
-							iconColor="#A78BFA"
-							style={{ margin: 0 }}
-							containerColor="transparent"
-						/>
-						<IconButton
-							icon="share-variant"
-							onPress={() => { }}
-							size={20}
-							iconColor="#A78BFA"
-							style={{ margin: 0, marginLeft: -8 }}
-							containerColor="transparent"
-						/>
-					</View>
-				}
 			/>
 			<ScreenContainer>
 				{/* Header customizado */}
@@ -335,9 +315,10 @@ export default function PlaceDetailScreen() {
 
 							<View style={styles.modernInfoRow}>
 								<View style={styles.ratingContainer}>
-									<MaterialIcons name="star" size={20} color="#FBBF24" />
+									{/* // TODO: Descomentar para avaliações */}
+									{/* <MaterialIcons name="star" size={20} color="#FBBF24" />
 									<Text style={styles.mainRatingText}>{place.rating}</Text>
-									<Text style={styles.reviewText}>({place.reviewCount} avaliações)</Text>
+									<Text style={styles.reviewText}>({place.reviewCount} avaliações)</Text> */}
 							</View>
 							<View style={styles.distanceContainer}>
 								<MaterialIcons name="location-on" size={16} color="#A78BFA" />
@@ -480,7 +461,8 @@ export default function PlaceDetailScreen() {
 					</Card>
 					{/* Avaliações */}
 
-					<Card style={styles.card}>
+					{/* TODO: Ativar quando habilitar reviews, preciso descomentar aqui */}
+					{/* <Card style={styles.card}>
 						<Card.Content>
 							<TouchableOpacity
 								onPress={() => router.push({ pathname: '/place/[id]/reviews', params: { id: String(id) } })}
@@ -554,7 +536,7 @@ export default function PlaceDetailScreen() {
 								</Button>
 							</TouchableOpacity>
 						</Card.Content>
-					</Card>
+					</Card> */}
 
 				</ScrollView>
 

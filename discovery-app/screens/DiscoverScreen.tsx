@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { PlaceCard } from '@/components/PlaceCard';
+import { AdBanner } from '@/components/AdBanner';
 import { View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { FAB, Portal, Modal, Button, Text, Chip, Snackbar, Divider, useTheme } from 'react-native-paper';
 import { DiscoverHeader } from '@/components/DiscoverHeader';
@@ -218,7 +219,80 @@ export default function DiscoverScreen() {
       distance: "3.5 km",
       status: "Aberto" as 'Aberto',
     },
+    {
+      image: "https://picsum.photos/200",
+      title: "Pizzaria do Italiano",
+      tag: "Pizzaria",
+      rating: 4.6,
+      distance: "1.5 km",
+      status: "Aberto" as 'Aberto',
+    },
+    {
+      image: "https://picsum.photos/200",
+      title: "Lanchonete Central",
+      tag: "Lanchonete",
+      rating: 4.3,
+      distance: "0.9 km",
+      status: "Aberto" as 'Aberto',
+    },
+    {
+      image: "https://picsum.photos/200",
+      title: "Hotel Vista Mar",
+      tag: "Hotel",
+      rating: 4.9,
+      distance: "5.2 km",
+      status: "Aberto" as 'Aberto',
+    },
+    {
+      image: "https://picsum.photos/200",
+      title: "Pousada do Centro",
+      tag: "Pousada",
+      rating: 4.4,
+      distance: "2.8 km",
+      status: "Aberto" as 'Aberto',
+    },
+    {
+      image: "https://picsum.photos/200",
+      title: "Bar Sunset",
+      tag: "Bar",
+      rating: 4.5,
+      distance: "4.1 km",
+      status: "Aberto" as 'Aberto',
+    },
+    {
+      image: "https://picsum.photos/200",
+      title: "Restaurante Gourmet",
+      tag: "Restaurante",
+      rating: 4.8,
+      distance: "3.0 km",
+      status: "Fechado" as 'Fechado',
+    },
   ];
+
+  // Função para criar lista com anúncios intercalados
+  const createListWithAds = () => {
+    const listWithAds: Array<{ type: 'place' | 'ad'; data?: any; adId?: string }> = [];
+    
+    places.forEach((place, index) => {
+      // Adiciona o lugar
+      listWithAds.push({ type: 'place', data: place });
+      
+      // A cada 5 lugares, adiciona um anúncio (mas não no final da lista)
+      if ((index + 1) % 5 === 0 && index + 1 < places.length) {
+        listWithAds.push({ 
+          type: 'ad', 
+          adId: `ad-${Math.floor((index + 1) / 5)}` 
+        });
+      }
+    });
+    
+    return listWithAds;
+  };
+
+  const handleAdPress = () => {
+    // Aqui você pode implementar a lógica para quando o anúncio for clicado
+    console.log('Anúncio clicado');
+  };
 
   return (
     <SafeAreaContainerWithBottomMenu>
@@ -296,18 +370,30 @@ export default function DiscoverScreen() {
         </View>
 
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
-          {places.map((place, idx) => (
-              <PlaceCard
-                key={idx}
-                image={place.image}
-                title={place.title}
-                tag={place.tag}
-                rating={place.rating}
-                distance={place.distance}
-                status={place.status}
-                onFavorite={() => setSnackbarVisible(true)}
-              />
-          ))}
+          {createListWithAds().map((item, idx) => {
+            if (item.type === 'ad') {
+              return (
+                <AdBanner
+                  key={item.adId}
+                  adId={item.adId}
+                  onPress={handleAdPress}
+                />
+              );
+            } else {
+              return (
+                <PlaceCard
+                  key={`place-${idx}`}
+                  image={item.data.image}
+                  title={item.data.title}
+                  tag={item.data.tag}
+                  rating={item.data.rating}
+                  distance={item.data.distance}
+                  status={item.data.status}
+                  onFavorite={() => setSnackbarVisible(true)}
+                />
+              );
+            }
+          })}
         </ScrollView>
         <Portal>
           <Modal visible={filterVisible} onDismiss={() => setFilterVisible(false)} contentContainerStyle={styles.modalContainer}>
