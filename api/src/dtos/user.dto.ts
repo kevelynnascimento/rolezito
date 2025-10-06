@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsOptional, MinLength, IsEnum } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, MinLength, IsEnum, IsBoolean } from 'class-validator';
 import { UserRole } from '../enums/user-role.enum';
 
 export class RegisterDto {
@@ -42,4 +42,14 @@ export class UserResponseDto {
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export class UpdateUserStatusDto {
+  @IsBoolean({ message: 'isActive deve ser um valor booleano' })
+  isActive: boolean;
+}
+
+export class UpdateUserRoleDto {
+  @IsEnum(UserRole, { message: 'Role deve ser válido' })
+  role: UserRole;
 }

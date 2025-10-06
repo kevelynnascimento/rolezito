@@ -6,7 +6,7 @@ import { PlaceImage } from './place-image.entity';
 import { Review } from './review.entity';
 import { Event } from './event.entity';
 
-@Entity('places')
+@Entity('place')
 export class Place {
   @PrimaryGeneratedColumn('uuid')
   id: string;

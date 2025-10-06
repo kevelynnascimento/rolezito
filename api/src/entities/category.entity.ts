@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Place } from './place.entity';
 
-@Entity('categories')
+@Entity('category')
 export class Category {
   @PrimaryGeneratedColumn('uuid')
   id: string;

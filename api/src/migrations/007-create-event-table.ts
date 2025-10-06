@@ -1,10 +1,10 @@
-import { MigrationInterface, QueryRunner, Table, TableForeignKey, TableIndex } from "typeorm";
+import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm";
 
-export class CreateFavoritesTable1696435700000 implements MigrationInterface {
+export class CreateEventTable1696435800000 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
-                name: "favorites",
+                name: "event",
                 columns: [
                     {
                         name: "id",
@@ -14,9 +14,29 @@ export class CreateFavoritesTable1696435700000 implements MigrationInterface {
                         default: "uuid_generate_v4()"
                     },
                     {
-                        name: "userId",
-                        type: "uuid",
+                        name: "title",
+                        type: "varchar",
                         isNullable: false
+                    },
+                    {
+                        name: "description",
+                        type: "text",
+                        isNullable: false
+                    },
+                    {
+                        name: "date",
+                        type: "timestamp",
+                        isNullable: false
+                    },
+                    {
+                        name: "price",
+                        type: "varchar",
+                        isNullable: true
+                    },
+                    {
+                        name: "type",
+                        type: "varchar",
+                        default: "'event'"
                     },
                     {
                         name: "placeId",
@@ -33,37 +53,18 @@ export class CreateFavoritesTable1696435700000 implements MigrationInterface {
             true
         );
 
-        await queryRunner.createIndex(
-            "favorites",
-            new TableIndex({
-                name: "IDX_favorites_userId_placeId",
-                columnNames: ["userId", "placeId"],
-                isUnique: true
-            })
-        );
-
         await queryRunner.createForeignKey(
-            "favorites",
-            new TableForeignKey({
-                columnNames: ["userId"],
-                referencedColumnNames: ["id"],
-                referencedTableName: "users",
-                onDelete: "CASCADE"
-            })
-        );
-
-        await queryRunner.createForeignKey(
-            "favorites",
+            "event",
             new TableForeignKey({
                 columnNames: ["placeId"],
                 referencedColumnNames: ["id"],
-                referencedTableName: "places",
+                referencedTableName: "place",
                 onDelete: "CASCADE"
             })
         );
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable("favorites");
+        await queryRunner.dropTable("event");
     }
 }

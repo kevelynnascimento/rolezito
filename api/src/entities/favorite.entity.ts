@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, JoinColumn
 import { User } from './user.entity';
 import { Place } from './place.entity';
 
-@Entity('favorites')
+@Entity('favorite')
 @Unique(['userId', 'placeId'])
 export class Favorite {
   @PrimaryGeneratedColumn('uuid')

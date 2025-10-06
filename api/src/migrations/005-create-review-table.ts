@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm";
 
-export class CreatePlaceImagesTable1696435500000 implements MigrationInterface {
+export class CreateReviewTable1696435600000 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
-                name: "place_images",
+                name: "review",
                 columns: [
                     {
                         name: "id",
@@ -14,19 +14,29 @@ export class CreatePlaceImagesTable1696435500000 implements MigrationInterface {
                         default: "uuid_generate_v4()"
                     },
                     {
-                        name: "url",
-                        type: "varchar",
+                        name: "rating",
+                        type: "int",
                         isNullable: false
                     },
                     {
-                        name: "order",
-                        type: "int",
-                        default: 0
+                        name: "comment",
+                        type: "text",
+                        isNullable: false
+                    },
+                    {
+                        name: "userId",
+                        type: "uuid",
+                        isNullable: false
                     },
                     {
                         name: "placeId",
                         type: "uuid",
                         isNullable: false
+                    },
+                    {
+                        name: "createdAt",
+                        type: "timestamp",
+                        default: "CURRENT_TIMESTAMP"
                     }
                 ]
             }),
@@ -34,17 +44,27 @@ export class CreatePlaceImagesTable1696435500000 implements MigrationInterface {
         );
 
         await queryRunner.createForeignKey(
-            "place_images",
+            "review",
+            new TableForeignKey({
+                columnNames: ["userId"],
+                referencedColumnNames: ["id"],
+                referencedTableName: "user",
+                onDelete: "CASCADE"
+            })
+        );
+
+        await queryRunner.createForeignKey(
+            "review",
             new TableForeignKey({
                 columnNames: ["placeId"],
                 referencedColumnNames: ["id"],
-                referencedTableName: "places",
+                referencedTableName: "place",
                 onDelete: "CASCADE"
             })
         );
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable("place_images");
+        await queryRunner.dropTable("review");
     }
 }

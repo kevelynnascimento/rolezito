@@ -10,7 +10,6 @@ import { routingControllersToSpec } from 'routing-controllers-openapi';
 import { AppDataSource } from './config/database';
 
 // Import controllers
-import { AuthController } from './controllers/auth.controller';
 import { PlaceController } from './controllers/place.controller';
 import { FavoriteController } from './controllers/favorite.controller';
 import { CategoryController } from './controllers/category.controller';
@@ -32,7 +31,6 @@ app.use(express.urlencoded({ extended: true }));
 useExpressServer(app, {
   routePrefix: '/api',
   controllers: [
-    AuthController,
     PlaceController,
     FavoriteController,
     CategoryController,
@@ -50,7 +48,6 @@ try {
   const storage = getMetadataArgsStorage();
   const spec = routingControllersToSpec(storage, {
     controllers: [
-      AuthController,
       PlaceController,
       FavoriteController,
       CategoryController,

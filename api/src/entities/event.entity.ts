@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { Place } from './place.entity';
 
-@Entity('events')
+@Entity('event')
 export class Event {
   @PrimaryGeneratedColumn('uuid')
   id: string;

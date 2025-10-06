@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm";
 
-export class CreatePlacesTable1696435400000 implements MigrationInterface {
+export class CreatePlaceTable1696435400000 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
-                name: "places",
+                name: "place",
                 columns: [
                     {
                         name: "id",
@@ -85,6 +85,11 @@ export class CreatePlacesTable1696435400000 implements MigrationInterface {
                         isNullable: false
                     },
                     {
+                        name: "isFeatured",
+                        type: "boolean",
+                        default: false
+                    },
+                    {
                         name: "createdAt",
                         type: "timestamp",
                         default: "CURRENT_TIMESTAMP"
@@ -101,17 +106,17 @@ export class CreatePlacesTable1696435400000 implements MigrationInterface {
         );
 
         await queryRunner.createForeignKey(
-            "places",
+            "place",
             new TableForeignKey({
                 columnNames: ["categoryId"],
                 referencedColumnNames: ["id"],
-                referencedTableName: "categories",
+                referencedTableName: "category",
                 onDelete: "CASCADE"
             })
         );
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable("places");
+        await queryRunner.dropTable("place");
     }
 }

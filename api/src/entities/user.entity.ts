@@ -5,7 +5,7 @@ import { Notification } from './notification.entity';
 import { Review } from './review.entity';
 import { UserRole } from '../enums/user-role.enum';
 
-@Entity('users')
+@Entity('user')
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;

@@ -3,7 +3,7 @@ import { IsNotEmpty, Min, Max } from 'class-validator';
 import { User } from './user.entity';
 import { Place } from './place.entity';
 
-@Entity('reviews')
+@Entity('review')
 export class Review {
   @PrimaryGeneratedColumn('uuid')
   id: string;

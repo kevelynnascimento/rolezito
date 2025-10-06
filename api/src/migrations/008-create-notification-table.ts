@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm";
 
-export class CreateReviewsTable1696435600000 implements MigrationInterface {
+export class CreateNotificationTable1696435900000 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(
             new Table({
-                name: "reviews",
+                name: "notification",
                 columns: [
                     {
                         name: "id",
@@ -14,22 +14,32 @@ export class CreateReviewsTable1696435600000 implements MigrationInterface {
                         default: "uuid_generate_v4()"
                     },
                     {
-                        name: "rating",
-                        type: "int",
+                        name: "type",
+                        type: "varchar",
                         isNullable: false
                     },
                     {
-                        name: "comment",
+                        name: "title",
+                        type: "varchar",
+                        isNullable: false
+                    },
+                    {
+                        name: "message",
                         type: "text",
                         isNullable: false
                     },
                     {
-                        name: "userId",
-                        type: "uuid",
-                        isNullable: false
+                        name: "read",
+                        type: "boolean",
+                        default: false
                     },
                     {
                         name: "placeId",
+                        type: "uuid",
+                        isNullable: true
+                    },
+                    {
+                        name: "userId",
                         type: "uuid",
                         isNullable: false
                     },
@@ -44,27 +54,17 @@ export class CreateReviewsTable1696435600000 implements MigrationInterface {
         );
 
         await queryRunner.createForeignKey(
-            "reviews",
+            "notification",
             new TableForeignKey({
                 columnNames: ["userId"],
                 referencedColumnNames: ["id"],
-                referencedTableName: "users",
-                onDelete: "CASCADE"
-            })
-        );
-
-        await queryRunner.createForeignKey(
-            "reviews",
-            new TableForeignKey({
-                columnNames: ["placeId"],
-                referencedColumnNames: ["id"],
-                referencedTableName: "places",
+                referencedTableName: "user",
                 onDelete: "CASCADE"
             })
         );
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable("reviews");
+        await queryRunner.dropTable("notification");
     }
 }
