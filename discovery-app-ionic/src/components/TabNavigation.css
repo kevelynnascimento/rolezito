@@ -19,7 +19,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, #A78BFA 0%, #7C5CFA 100%);
+  background: #A78BFA;
   border-top-left-radius: 28px;
   border-top-right-radius: 28px;
   z-index: -1;
