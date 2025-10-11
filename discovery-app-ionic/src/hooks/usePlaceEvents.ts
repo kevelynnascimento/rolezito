@@ -6,12 +6,12 @@ interface UsePlacesAndEventsParams {
   type: PlaceType | 'all';
 }
 
-// Mock data for demonstration
+// Mock data for demonstration - Using Picsum Photos (more reliable than Unsplash)
 const mockPlaces: Place[] = [
   {
     id: '1',
     type: PlaceType.LOCAL,
-    image: 'https://via.placeholder.com/400x300/FF6B35/FFFFFF?text=Bar+do+João',
+    image: 'https://picsum.photos/seed/bar1/400/300',
     title: 'Bar do João',
     tag: 'Bar • Música ao vivo',
     rating: 4.5,
@@ -21,7 +21,7 @@ const mockPlaces: Place[] = [
   {
     id: '2',
     type: PlaceType.EVENT,
-    image: 'https://via.placeholder.com/400x300/10B981/FFFFFF?text=Show+de+Rock',
+    image: 'https://picsum.photos/seed/event1/400/300',
     title: 'Show de Rock',
     tag: 'Evento • Música',
     rating: 4.8,
@@ -33,7 +33,7 @@ const mockPlaces: Place[] = [
   {
     id: '3',
     type: PlaceType.LOCAL,
-    image: 'https://via.placeholder.com/400x300/A78BFA/FFFFFF?text=Restaurante+Gourmet',
+    image: 'https://picsum.photos/seed/restaurant1/400/300',
     title: 'Restaurante Gourmet',
     tag: 'Restaurante • Fine dining',
     rating: 4.7,
@@ -43,7 +43,7 @@ const mockPlaces: Place[] = [
   {
     id: '4',
     type: PlaceType.LOCAL,
-    image: 'https://via.placeholder.com/400x300/F59E0B/FFFFFF?text=Pizzaria+Central',
+    image: 'https://picsum.photos/seed/pizza1/400/300',
     title: 'Pizzaria Central',
     tag: 'Pizzaria • Entrega',
     rating: 4.3,
@@ -53,7 +53,7 @@ const mockPlaces: Place[] = [
   {
     id: '5',
     type: PlaceType.EVENT,
-    image: 'https://via.placeholder.com/400x300/EF4444/FFFFFF?text=Festival+Gastronômico',
+    image: 'https://picsum.photos/seed/festival1/400/300',
     title: 'Festival Gastronômico',
     tag: 'Evento • Gastronomia',
     rating: 4.9,

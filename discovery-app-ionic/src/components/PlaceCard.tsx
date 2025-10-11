@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   IonCard,
   IonCardContent,
@@ -7,6 +7,7 @@ import {
 } from '@ionic/react';
 import { locationOutline } from 'ionicons/icons';
 import { Place, PlaceType } from '../types/place';
+import { getSolidColorImage } from '../utils/imageUtils';
 import './PlaceCard.css';
 
 interface Props {
@@ -15,6 +16,7 @@ interface Props {
 }
 
 export const PlaceCard: React.FC<Props> = ({ place }) => {
+  const [imageError, setImageError] = useState(false);
   const isOpen = place.status === 'Aberto';
   const isEvent = place.type === PlaceType.EVENT;
 
@@ -31,6 +33,12 @@ export const PlaceCard: React.FC<Props> = ({ place }) => {
     return `${dateStr} às ${place.eventTime}`;
   };
 
+  // Gerar imagem de fallback baseada no ID do place
+  const getFallbackImageUrl = () => {
+    const colorIndex = parseInt(place.id) % 6; // 6 cores diferentes
+    return getSolidColorImage(90, 120, colorIndex);
+  };
+
   return (
     <IonCard className="place-card">
       <div className="place-card-content">
@@ -43,9 +51,11 @@ export const PlaceCard: React.FC<Props> = ({ place }) => {
         
         <div className="card-image-container">
           <img 
-            src={place.image} 
+            src={imageError ? getFallbackImageUrl() : place.image} 
             alt={place.title}
             className="card-image"
+            onError={() => setImageError(true)}
+            loading="lazy"
           />
         </div>
 

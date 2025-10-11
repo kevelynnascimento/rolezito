@@ -1,0 +1,38 @@
+.favorites-content {
+  --background: #F8FAFC;
+}
+
+.favorites-list {
+  padding: 8px 16px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 20px;
+  height: 60vh;
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+
+.empty-state h2 {
+  color: #1F2937;
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.empty-state p {
+  color: #6B7280;
+  font-size: 16px;
+  margin: 0;
+  line-height: 1.5;
+  max-width: 300px;
+}
