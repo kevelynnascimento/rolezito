@@ -22,19 +22,18 @@ export default function TabNavigation() {
       focusedIcon: ({ color }: { color: string }) => <MaterialIcons name="search" color={color} size={24} />,
       unfocusedIcon: ({ color }: { color: string }) => <MaterialIcons name="search" color={color} size={24} />,
     },
-    // TODO: Remover comentário para ativar abas de Favoritos e Perfil
-    // { 
-    //   key: 'favorites', 
-    //   title: 'Favoritos', 
-    //   focusedIcon: ({ color }: { color: string }) => <MaterialIcons name="favorite-border" color={color} size={24} />,
-    //   unfocusedIcon: ({ color }: { color: string }) => <MaterialIcons name="favorite-border" color={color} size={24} />
-    // },
-    // { 
-    //   key: 'profile', 
-    //   title: 'Perfil', 
-    //   focusedIcon: ({ color }: { color: string }) => <MaterialIcons name="perm-identity" color={color} size={24} />,
-    //   unfocusedIcon: ({ color }: { color: string }) => <MaterialIcons name="perm-identity" color={color} size={24} />
-    // },
+    { 
+      key: 'favorites', 
+      title: 'Favoritos', 
+      focusedIcon: ({ color }: { color: string }) => <MaterialIcons name="favorite-border" color={color} size={24} />,
+      unfocusedIcon: ({ color }: { color: string }) => <MaterialIcons name="favorite-border" color={color} size={24} />
+    },
+    { 
+      key: 'profile', 
+      title: 'Perfil', 
+      focusedIcon: ({ color }: { color: string }) => <MaterialIcons name="perm-identity" color={color} size={24} />,
+      unfocusedIcon: ({ color }: { color: string }) => <MaterialIcons name="perm-identity" color={color} size={24} />
+    },
   ]);
 
   const renderScene = BottomNavigation.SceneMap({

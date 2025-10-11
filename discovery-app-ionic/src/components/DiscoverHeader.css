@@ -1,0 +1,145 @@
+.discover-header {
+  background: #fff;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.header-toolbar {
+  --background: #fff;
+  --color: #1F2937;
+  padding: 8px 16px;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.toggle-group {
+  display: flex;
+  background: #F3F4F6;
+  border-radius: 8px;
+  padding: 2px;
+  gap: 0;
+}
+
+.toggle-button {
+  --border-radius: 6px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --padding-top: 8px;
+  --padding-bottom: 8px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  height: auto;
+}
+
+.toggle-button.left {
+  --border-top-right-radius: 0;
+  --border-bottom-right-radius: 0;
+}
+
+.toggle-button.right {
+  --border-top-left-radius: 0;
+  --border-bottom-left-radius: 0;
+  margin-left: -1px;
+}
+
+.toggle-button.active {
+  --background: #A78BFA;
+  --color: #fff;
+  font-weight: 600;
+}
+
+.notification-button {
+  position: relative;
+  --color: #6B7280;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: #EF4444;
+  color: white;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 5px;
+  min-width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.location-info {
+  padding: 12px 16px;
+  background: #F8FAFC;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.location-card {
+  --background: transparent;
+  --color: #1F2937;
+  width: 100%;
+  justify-content: flex-start;
+  text-align: left;
+  margin: 0;
+  padding: 12px 16px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #E5E7EB;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.location-icon {
+  color: #A78BFA;
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.location-text {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.location-city {
+  font-size: 15px;
+  font-weight: 500;
+  color: #1F2937;
+  margin-right: 8px;
+}
+
+.uf-chip {
+  --background: #EEF2FF;
+  --color: #5B21B6;
+  font-size: 11px;
+  font-weight: 600;
+  height: 20px;
+  margin-left: 8px;
+}
+
+.city-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.uf-chip-small {
+  --background: #EEF2FF;
+  --color: #5B21B6;
+  font-size: 10px;
+  font-weight: 600;
+  height: 18px;
+}
+
+.no-results {
+  text-align: center;
+  color: #6B7280;
+  font-style: italic;
+}

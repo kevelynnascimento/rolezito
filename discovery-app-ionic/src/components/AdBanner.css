@@ -1,0 +1,38 @@
+.ad-banner {
+  margin: 6px 2px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ad-content {
+  padding: 16px !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ad-text h3 {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+}
+
+.ad-text p {
+  margin: 0;
+  font-size: 13px;
+  opacity: 0.9;
+  color: white;
+}
+
+.ad-cta {
+  font-size: 12px;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 6px 12px;
+  border-radius: 16px;
+  color: white;
+}

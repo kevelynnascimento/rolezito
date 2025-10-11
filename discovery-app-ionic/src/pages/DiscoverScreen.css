@@ -1,0 +1,145 @@
+.discover-content {
+  --background: #F8FAFC;
+}
+
+.filters-feedback {
+  padding: 12px 16px;
+  background: #F8FAFC;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.filter-chip {
+  --background: #EEF2FF;
+  --color: #5B21B6;
+  font-size: 12px;
+  height: 28px;
+  cursor: pointer;
+}
+
+.clear-button {
+  --color: #64748B;
+  font-size: 11px;
+  height: 28px;
+  margin-left: 8px;
+}
+
+.filters-count {
+  font-size: 11px;
+  color: #64748B;
+  font-style: italic;
+}
+
+.places-list {
+  padding: 8px 16px;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.loading-container p {
+  margin-top: 16px;
+  color: #6B7280;
+  font-size: 16px;
+}
+
+.error-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.error-container p {
+  color: #DC2626;
+  font-size: 16px;
+}
+
+/* Filter Modal Styles */
+.filter-modal-content {
+  --background: #fff;
+}
+
+.filter-section {
+  margin: 16px 0;
+  padding: 0 16px;
+}
+
+.section-label {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1F2937;
+  margin-bottom: 12px;
+}
+
+.section-sublabel {
+  font-size: 14px;
+  color: #6B7280;
+  margin: 0 0 12px 0;
+  line-height: 1.4;
+}
+
+.type-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.type-button {
+  flex: 1;
+  min-width: 100px;
+  --border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.style-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.style-chip {
+  --background: #F8FAFC;
+  --color: #374151;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.style-chip ion-icon {
+  margin-left: 4px;
+}
+
+.filter-apply {
+  padding: 20px 16px;
+  margin-top: 20px;
+}
+
+/* Custom range styling */
+ion-range {
+  --bar-background: #E5E7EB;
+  --bar-background-active: #A78BFA;
+  --bar-height: 4px;
+  --bar-border-radius: 2px;
+  --knob-background: #A78BFA;
+  --knob-size: 20px;
+  --pin-background: #A78BFA;
+  --pin-color: white;
+}

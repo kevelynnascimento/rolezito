@@ -1,0 +1,80 @@
+import React from 'react';
+import {
+  IonCard,
+  IonCardContent,
+  IonChip,
+  IonIcon,
+} from '@ionic/react';
+import { locationOutline } from 'ionicons/icons';
+import { Place, PlaceType } from '../types/place';
+import './PlaceCard.css';
+
+interface Props {
+  place: Place;
+  onFavorite?: () => void;
+}
+
+export const PlaceCard: React.FC<Props> = ({ place }) => {
+  const isOpen = place.status === 'Aberto';
+  const isEvent = place.type === PlaceType.EVENT;
+
+  // Formatar data e hora para eventos
+  const formatEventDateTime = () => {
+    if (!isEvent || !place.eventDate || !place.eventTime) return '';
+    
+    const date = new Date(place.eventDate);
+    const dateStr = date.toLocaleDateString('pt-BR', { 
+      day: '2-digit', 
+      month: '2-digit' 
+    });
+    
+    return `${dateStr} às ${place.eventTime}`;
+  };
+
+  return (
+    <IonCard className="place-card">
+      <div className="place-card-content">
+        {/* Badge para tipo */}
+        <div className={`type-badge ${isEvent ? 'event-badge' : 'local-badge'}`}>
+          <span className="type-badge-text">
+            {isEvent ? 'EVENTO' : 'LOCAL'}
+          </span>
+        </div>
+        
+        <div className="card-image-container">
+          <img 
+            src={place.image} 
+            alt={place.title}
+            className="card-image"
+          />
+        </div>
+
+        <IonCardContent className="card-content">
+          <div className="card-info">
+            <h2 className="place-title">{place.title}</h2>
+            <p className="place-tag">{place.tag}</p>
+            
+            {/* Informações específicas para eventos */}
+            {isEvent && place.eventDate && place.eventTime && (
+              <p className="event-datetime">{formatEventDateTime()}</p>
+            )}
+
+            <div className="info-row">
+              <div className="info-left">
+                <IonIcon icon={locationOutline} className="location-icon" />
+                <span className="info-text">{place.distance}</span>
+              </div>
+              
+              <IonChip 
+                className={`status-chip ${isOpen ? 'status-open' : 'status-closed'}`}
+                color={isOpen ? 'success' : 'danger'}
+              >
+                {place.status}
+              </IonChip>
+            </div>
+          </div>
+        </IonCardContent>
+      </div>
+    </IonCard>
+  );
+};
