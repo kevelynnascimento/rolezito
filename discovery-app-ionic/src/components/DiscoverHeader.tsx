@@ -17,6 +17,7 @@ import {
   locationOutline, 
   chevronDownOutline, 
   closeOutline,
+  notificationsOutline,
 } from 'ionicons/icons';
 import './DiscoverHeader.css';
 
@@ -90,13 +91,10 @@ export const DiscoverHeader: React.FC<Props> = ({
               </IonButton>
             </div>
 
-            {/* Notifications - commented out as per original */}
-            {/* <IonButton fill="clear" className="notification-button">
+            <IonButton fill="clear" className="notification-button">
               <IonIcon icon={notificationsOutline} />
-              {notificationCount > 0 && (
-                <div className="notification-badge">{notificationCount}</div>
-              )}
-            </IonButton> */}
+                <div className="notification-badge">2</div>
+            </IonButton>
           </div>
         </IonToolbar>
         

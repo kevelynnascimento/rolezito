@@ -76,7 +76,7 @@
 }
 
 .location-info {
-  padding: 12px 16px;
+  padding: 8px 16px;
   background: #F8FAFC;
   border-bottom: 1px solid #E5E7EB;
 }
@@ -88,17 +88,17 @@
   justify-content: flex-start;
   text-align: left;
   margin: 0;
-  padding: 12px 16px;
+  padding: 1px 12px;
   background: #fff;
-  border-radius: 12px;
+  border-radius: 8px;
   border: 1px solid #E5E7EB;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .location-icon {
   color: #A78BFA;
-  font-size: 20px;
-  margin-right: 10px;
+  font-size: 16px;
+  margin-right: 8px;
 }
 
 .location-text {
@@ -108,7 +108,7 @@
 }
 
 .location-city {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   color: #6B7280;
   margin-right: 8px;
@@ -117,9 +117,9 @@
 .uf-chip {
   --background: #EEF2FF;
   --color: #5B21B6;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
-  height: 20px;
+  height: 18px;
   margin-left: 8px;
 }
 
