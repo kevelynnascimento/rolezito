@@ -62,7 +62,7 @@
   margin: 0 0 16px 0;
   font-size: 18px;
   font-weight: 600;
-  color: #1F2937;
+  color: #6B7280;
 }
 
 .save-button {
@@ -89,7 +89,7 @@ ion-item {
 }
 
 ion-input {
-  --color: #1F2937;
+  --color: #6B7280;
   --placeholder-color: #9CA3AF;
 }
 

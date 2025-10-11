@@ -100,7 +100,8 @@ http://ionicframework.com/docs/theming/ */
   --ion-background-color-rgb: 255, 255, 255;
   
   /** Cor do texto principal **/
-  --ion-text-color: #1F2937;
+    /** Texto principal **/
+  --ion-text-color: #6B7280;
   --ion-text-color-rgb: 31, 41, 55;
   
   /** Cor do texto secundário **/
@@ -115,7 +116,7 @@ http://ionicframework.com/docs/theming/ */
   
   /** Toolbar background **/
   --ion-toolbar-background: #ffffff;
-  --ion-toolbar-color: #1F2937;
+  --ion-toolbar-color: #6B7280;
   
   /** Tab bar configuração **/
   --ion-tab-bar-background: #ffffff;
@@ -158,16 +159,16 @@ ion-modal, ion-popover {
   --color: #1F2937 !important;
 }
 
-/* Força toolbar clara */
-ion-toolbar {
+/* Força toolbar clara apenas para toolbars sem cor específica */
+ion-toolbar:not([color]) {
   --background: #ffffff !important;
-  --color: #1F2937 !important;
+  --color: #6B7280 !important;
 }
 
 /* Remove qualquer sombra escura que possa aparecer */
-ion-item {
+ion-item:not([color]) {
   --background: #ffffff !important;
-  --color: #1F2937 !important;
+  --color: #6B7280 !important;
 }
 
 /* Garante que o tab bar seja sempre claro na parte inferior */

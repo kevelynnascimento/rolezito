@@ -5,7 +5,7 @@
 
 .header-toolbar {
   --background: #fff;
-  --color: #1F2937;
+  --color: #6B7280;
   padding: 8px 16px;
 }
 
@@ -83,7 +83,7 @@
 
 .location-card {
   --background: transparent;
-  --color: #1F2937;
+  --color: #6B7280;
   width: 100%;
   justify-content: flex-start;
   text-align: left;
@@ -110,7 +110,7 @@
 .location-city {
   font-size: 15px;
   font-weight: 500;
-  color: #1F2937;
+  color: #6B7280;
   margin-right: 8px;
 }
 

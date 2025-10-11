@@ -16,12 +16,12 @@ html.dark,
   --ion-background-color-rgb: 255, 255, 255 !important;
   
   /* Texto */
-  --ion-text-color: #1F2937 !important;
-  --ion-text-color-rgb: 31, 41, 55 !important;
+  --ion-text-color: #6B7280 !important;
+  --ion-text-color-rgb: 107, 114, 128 !important;
   
   /* Toolbar */
   --ion-toolbar-background: #ffffff !important;
-  --ion-toolbar-color: #1F2937 !important;
+  --ion-toolbar-color: #6B7280 !important;
   
   /* Tab bar */
   --ion-tab-bar-background: #A78BFA !important;
@@ -30,11 +30,11 @@ html.dark,
   
   /* Item background */
   --ion-item-background: #ffffff !important;
-  --ion-item-color: #1F2937 !important;
+  --ion-item-color: #6B7280 !important;
   
   /* Card background */
   --ion-card-background: #ffffff !important;
-  --ion-card-color: #1F2937 !important;
+  --ion-card-color: #6B7280 !important;
   
   /* Modal e Popover */
   --ion-modal-background: #ffffff !important;
@@ -57,14 +57,14 @@ ion-page,
 ion-content,
 ion-tabs {
   background-color: #ffffff !important;
-  color: #1F2937 !important;
+  color: #6B7280 !important;
 }
 
-/* Força headers sempre claros */
-ion-header,
-ion-toolbar {
+/* Força headers sempre claros apenas para elementos sem cor específica */
+ion-header:not([color]),
+ion-toolbar:not([color]) {
   background: #ffffff !important;
-  color: #1F2937 !important;
+  color: #6B7280 !important;
 }
 
 /* Força todos os cards sempre claros */
@@ -72,14 +72,14 @@ ion-card,
 ion-item,
 ion-list {
   background: #ffffff !important;
-  color: #1F2937 !important;
+  color: #6B7280 !important;
 }
 
 /* Força modals claros */
 ion-modal .modal-wrapper,
 ion-popover .popover-content {
   background: #ffffff !important;
-  color: #1F2937 !important;
+  color: #6B7280 !important;
 }
 
 /* Buttons modernos */
@@ -94,7 +94,7 @@ ion-textarea,
 ion-select,
 ion-datetime {
   background: #ffffff !important;
-  color: #1F2937 !important;
+  color: #6B7280 !important;
 }
 
 /* Remove qualquer sombra escura */
