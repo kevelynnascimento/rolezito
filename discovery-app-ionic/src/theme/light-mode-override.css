@@ -1,0 +1,105 @@
+/* 
+ * Arquivo de Override para Tema Claro Forçado
+ * Este arquivo garante que o app sempre use tema claro
+ */
+
+/* Sistema de cores global forçado */
+:root, 
+html[data-theme="dark"], 
+html.dark,
+.dark-theme {
+  /* Sobrescreve qualquer configuração de modo escuro */
+  color-scheme: light !important;
+  
+  /* Background principal */
+  --ion-background-color: #ffffff !important;
+  --ion-background-color-rgb: 255, 255, 255 !important;
+  
+  /* Texto */
+  --ion-text-color: #1F2937 !important;
+  --ion-text-color-rgb: 31, 41, 55 !important;
+  
+  /* Toolbar */
+  --ion-toolbar-background: #ffffff !important;
+  --ion-toolbar-color: #1F2937 !important;
+  
+  /* Tab bar */
+  --ion-tab-bar-background: #A78BFA !important;
+  --ion-tab-bar-color: #E0D7FB !important;
+  --ion-tab-bar-color-selected: #ffffff !important;
+  
+  /* Item background */
+  --ion-item-background: #ffffff !important;
+  --ion-item-color: #1F2937 !important;
+  
+  /* Card background */
+  --ion-card-background: #ffffff !important;
+  --ion-card-color: #1F2937 !important;
+  
+  /* Modal e Popover */
+  --ion-modal-background: #ffffff !important;
+  --ion-popover-background: #ffffff !important;
+  
+  /* Header background */
+  --ion-header-background: #ffffff !important;
+  
+  /* Content background */
+  --ion-content-background: #ffffff !important;
+}
+
+/* Força elementos específicos */
+body, 
+html, 
+#root,
+ion-app,
+ion-router-outlet,
+ion-page,
+ion-content,
+ion-tabs {
+  background-color: #ffffff !important;
+  color: #1F2937 !important;
+}
+
+/* Força headers sempre claros */
+ion-header,
+ion-toolbar {
+  background: #ffffff !important;
+  color: #1F2937 !important;
+}
+
+/* Força todos os cards sempre claros */
+ion-card,
+ion-item,
+ion-list {
+  background: #ffffff !important;
+  color: #1F2937 !important;
+}
+
+/* Força modals claros */
+ion-modal .modal-wrapper,
+ion-popover .popover-content {
+  background: #ffffff !important;
+  color: #1F2937 !important;
+}
+
+/* Buttons modernos */
+ion-button {
+  font-weight: 500 !important;
+  text-transform: none !important;
+}
+
+/* Estilo dos input fields */
+ion-input,
+ion-textarea,
+ion-select,
+ion-datetime {
+  background: #ffffff !important;
+  color: #1F2937 !important;
+}
+
+/* Remove qualquer sombra escura */
+.dark,
+.dark-theme,
+[data-theme="dark"] {
+  filter: none !important;
+}

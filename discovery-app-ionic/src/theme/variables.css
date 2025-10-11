@@ -1,4 +1,4 @@
-/* Rolezito App Theme */
+/* Rolezito App Theme - Tema Claro Moderno */
 /* For information on how to create your own theme, please see:
 http://ionicframework.com/docs/theming/ */
 
@@ -39,8 +39,8 @@ http://ionicframework.com/docs/theming/ */
   /** warning - Laranja para avisos **/
   --ion-color-warning: #F59E0B;
   --ion-color-warning-rgb: 245, 158, 11;
-  --ion-color-warning-contrast: #ffffff;
-  --ion-color-warning-contrast-rgb: 255, 255, 255;
+  --ion-color-warning-contrast: #1F2937;
+  --ion-color-warning-contrast-rgb: 31, 41, 55;
   --ion-color-warning-shade: #d88b0a;
   --ion-color-warning-tint: #f6a824;
 
@@ -52,29 +52,29 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-danger-shade: #d23c3c;
   --ion-color-danger-tint: #f15757;
 
-  /** dark - Cor escura **/
-  --ion-color-dark: #1F2937;
-  --ion-color-dark-rgb: 31, 41, 55;
+  /** dark - Cor escura (ajustada para tema claro) **/
+  --ion-color-dark: #374151;
+  --ion-color-dark-rgb: 55, 65, 81;
   --ion-color-dark-contrast: #ffffff;
   --ion-color-dark-contrast-rgb: 255, 255, 255;
-  --ion-color-dark-shade: #1b2431;
-  --ion-color-dark-tint: #35404b;
+  --ion-color-dark-shade: #31394a;
+  --ion-color-dark-tint: #4b5563;
 
   /** medium - Cor média **/
-  --ion-color-medium: #6B7280;
-  --ion-color-medium-rgb: 107, 114, 128;
-  --ion-color-medium-contrast: #ffffff;
-  --ion-color-medium-contrast-rgb: 255, 255, 255;
-  --ion-color-medium-shade: #5e6571;
-  --ion-color-medium-tint: #7a818d;
+  --ion-color-medium: #9CA3AF;
+  --ion-color-medium-rgb: 156, 163, 175;
+  --ion-color-medium-contrast: #1F2937;
+  --ion-color-medium-contrast-rgb: 31, 41, 55;
+  --ion-color-medium-shade: #89909a;
+  --ion-color-medium-tint: #a6adb8;
 
   /** light - Cor clara **/
-  --ion-color-light: #F8FAFC;
-  --ion-color-light-rgb: 248, 250, 252;
-  --ion-color-light-contrast: #1f2937;
-  --ion-color-light-contrast-rgb: 31, 41, 55;
-  --ion-color-light-shade: #dadcde;
-  --ion-color-light-tint: #f9fbfc;
+  --ion-color-light: #F9FAFB;
+  --ion-color-light-rgb: 249, 250, 251;
+  --ion-color-light-contrast: #374151;
+  --ion-color-light-contrast-rgb: 55, 65, 81;
+  --ion-color-light-shade: #e5e7eb;
+  --ion-color-light-tint: #fafbfc;
 
   /** Cores customizadas para eventos e locais **/
   --ion-color-event: #FF6B35;
@@ -90,4 +90,93 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-local-contrast-rgb: 255, 255, 255;
   --ion-color-local-shade: #0ea372;
   --ion-color-local-tint: #28c58e;
+
+  /* ===================================
+   * CONFIGURAÇÕES GLOBAIS TEMA CLARO
+   * =================================== */
+  
+  /** Fundo principal da aplicação **/
+  --ion-background-color: #ffffff;
+  --ion-background-color-rgb: 255, 255, 255;
+  
+  /** Cor do texto principal **/
+  --ion-text-color: #1F2937;
+  --ion-text-color-rgb: 31, 41, 55;
+  
+  /** Cor do texto secundário **/
+  --ion-color-step-600: #6B7280;
+  --ion-color-step-400: #9CA3AF;
+  
+  /** Cores das bordas e separadores **/
+  --ion-border-color: #E5E7EB;
+  
+  /** Fundo dos cards e itens **/
+  --ion-item-background: #ffffff;
+  
+  /** Toolbar background **/
+  --ion-toolbar-background: #ffffff;
+  --ion-toolbar-color: #1F2937;
+  
+  /** Tab bar configuração **/
+  --ion-tab-bar-background: #ffffff;
+  --ion-tab-bar-color: #6B7280;
+  --ion-tab-bar-color-selected: #A78BFA;
+  
+  /** Modal e Popover **/
+  --ion-modal-background: #ffffff;
+  --ion-popover-background: #ffffff;
+  
+  /** Configurações do status bar (iOS) **/
+  --ion-statusbar-background: #ffffff;
+}
+
+/* ====================================================
+ * FORÇA O TEMA CLARO - SOBRESCREVE QUALQUER MODO ESCURO
+ * ==================================================== */
+
+* {
+  color-scheme: light !important;
+}
+
+html, body, ion-app {
+  background-color: #ffffff !important;
+  color: #1F2937 !important;
+}
+
+/* Garante que todas as pages tenham fundo branco */
+ion-page {
+  background: #ffffff !important;
+}
+
+ion-content {
+  --background: #ffffff !important;
+}
+
+/* Garante que modals e popovers sejam claros */
+ion-modal, ion-popover {
+  --background: #ffffff !important;
+  --color: #1F2937 !important;
+}
+
+/* Força toolbar clara */
+ion-toolbar {
+  --background: #ffffff !important;
+  --color: #1F2937 !important;
+}
+
+/* Remove qualquer sombra escura que possa aparecer */
+ion-item {
+  --background: #ffffff !important;
+  --color: #1F2937 !important;
+}
+
+/* Garante que o tab bar seja sempre claro na parte inferior */
+ion-tab-bar {
+  background: linear-gradient(135deg, #A78BFA 0%, #7C5CFA 100%) !important;
+}
+
+/* Melhora a aparência dos botões */
+ion-button {
+  text-transform: none !important;
+  font-weight: 500 !important;
 }

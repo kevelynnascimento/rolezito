@@ -1,11 +1,11 @@
 .discover-content {
-  --background: #F8FAFC;
+  --background: #ffffff !important;
 }
 
 .filters-feedback {
   padding: 12px 16px;
-  background: #F8FAFC;
-  border-bottom: 1px solid #E2E8F0;
+  background: #F9FAFB !important;
+  border-bottom: 1px solid #F1F5F9;
 }
 
 .active-filters {

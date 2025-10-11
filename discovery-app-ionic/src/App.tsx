@@ -19,7 +19,7 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
 /**
- * Ionic Dark Mode
+ * Ionic Dark Mode - Desabilitado para usar apenas tema claro
  * -----------------------------------------------------
  * For more info, please see:
  * https://ionicframework.com/docs/theming/dark-mode
@@ -27,13 +27,16 @@ import '@ionic/react/css/display.css';
 
 /* import '@ionic/react/css/palettes/dark.always.css'; */
 /* import '@ionic/react/css/palettes/dark.class.css'; */
-import '@ionic/react/css/palettes/dark.system.css';
+/* import '@ionic/react/css/palettes/dark.system.css'; */
 
 /* Theme variables */
 import './theme/variables.css';
+import './theme/light-mode-override.css';
 import TabNavigation from './components/TabNavigation';
 
-setupIonicReact();
+setupIonicReact({
+  mode: 'ios', // Força um visual mais moderno
+});
 
 const App: React.FC = () => (
   <IonApp>
