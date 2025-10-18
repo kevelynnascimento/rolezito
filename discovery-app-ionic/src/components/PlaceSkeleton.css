@@ -1,0 +1,109 @@
+.place-skeleton-card {
+  margin: 6px 2px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  background: #ffffff !important;
+  overflow: hidden;
+  height: 120px;
+  border: 1px solid #F1F5F9;
+}
+
+.place-skeleton-content {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  position: relative;
+  height: 100%;
+}
+
+.skeleton-type-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 2;
+  border-radius: 8px;
+  padding: 2px 6px;
+  background-color: #f0f0f0;
+}
+
+.skeleton-image-container {
+  width: 90px;
+  height: 120px;
+  overflow: hidden;
+}
+
+.skeleton-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+
+.skeleton-card-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 10px !important;
+}
+
+.skeleton-card-info {
+  width: 100%;
+}
+
+.skeleton-info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.skeleton-info-left {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.skeleton-location-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
+
+.skeleton-status-chip {
+  border-radius: 12px;
+  padding: 2px 4px;
+}
+
+/* Animação shimmer personalizada */
+@keyframes shimmer-loading {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.place-skeleton-card ion-skeleton-text {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 25%,
+    #e0e0e0 50%,
+    #f0f0f0 75%
+  );
+  background-size: 200px 100%;
+  animation: shimmer-loading 1.5s infinite;
+  border-radius: 4px;
+}
+
+/* Shimmer específico para diferentes elementos */
+.skeleton-type-badge ion-skeleton-text {
+  border-radius: 8px;
+}
+
+.skeleton-location-icon ion-skeleton-text {
+  border-radius: 50%;
+}
+
+.skeleton-status-chip ion-skeleton-text {
+  border-radius: 12px;
+}

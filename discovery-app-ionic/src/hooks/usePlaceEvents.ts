@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Place, PlaceType } from '../types/place';
 
 interface UsePlacesAndEventsParams {
@@ -67,37 +67,56 @@ const mockPlaces: Place[] = [
 export function usePlacesAndEvents({ category, type }: UsePlacesAndEventsParams) {
   const [places, setPlaces] = useState<Place[]>([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    // Simulate API call
-    setLoading(true);
+  const loadData = useCallback(async (isRefresh = false) => {
+    if (isRefresh) {
+      setRefreshing(true);
+    } else {
+      setLoading(true);
+    }
     setError(null);
     
-    setTimeout(() => {
-      try {
-        let filteredPlaces = mockPlaces;
-        
-        // Filter by type
-        if (type !== 'all') {
-          filteredPlaces = filteredPlaces.filter(place => place.type === type);
+    // Simulate API call
+    return new Promise<void>((resolve) => {
+      setTimeout(() => {
+        try {
+          let filteredPlaces = mockPlaces;
+          
+          // Filter by type
+          if (type !== 'all') {
+            filteredPlaces = filteredPlaces.filter(place => place.type === type);
+          }
+          
+          // Filter by category (simplified)
+          if (category) {
+            filteredPlaces = filteredPlaces.filter(place => 
+              place.tag.toLowerCase().includes(category.toLowerCase())
+            );
+          }
+          
+          setPlaces(filteredPlaces);
+          setLoading(false);
+          setRefreshing(false);
+          resolve();
+        } catch {
+          setError('Erro ao carregar dados');
+          setLoading(false);
+          setRefreshing(false);
+          resolve();
         }
-        
-        // Filter by category (simplified)
-        if (category) {
-          filteredPlaces = filteredPlaces.filter(place => 
-            place.tag.toLowerCase().includes(category.toLowerCase())
-          );
-        }
-        
-        setPlaces(filteredPlaces);
-        setLoading(false);
-      } catch {
-        setError('Erro ao carregar dados');
-        setLoading(false);
-      }
-    }, 500); // Simulate network delay
+      }, isRefresh ? 1500 : 500); // Longer delay for refresh to show skeleton
+    });
   }, [category, type]);
 
-  return { places, loading, error };
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
+  const refresh = () => {
+    return loadData(true);
+  };
+
+  return { places, loading, refreshing, error, refresh };
 }

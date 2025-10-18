@@ -3,15 +3,29 @@
 }
 
 .filters-feedback {
-  padding: 12px 16px;
+  padding: 6px 14px;
   background: #F9FAFB !important;
   border-bottom: 1px solid #F1F5F9;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  border-radius: 8px;
+  margin: 8px 16px 0 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.filters-feedback:hover {
+  background: #F3F4F6 !important;
+}
+
+.filters-feedback:active {
+  background: #E5E7EB !important;
+  transform: scale(0.98);
 }
 
 .active-filters {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 1px;
   align-items: center;
   margin-bottom: 6px;
 }
@@ -32,9 +46,78 @@
 }
 
 .filters-count {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-size: 11px;
   color: #64748B;
+}
+
+.filters-text {
   font-style: italic;
+}
+
+.filters-prompt {
+  padding: 12px 16px;
+  background: #F8FAFC !important;
+  border: 2px dashed #CBD5E1;
+  border-radius: 8px;
+  margin: 8px 16px 0 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filters-prompt:hover {
+  background: #F1F5F9 !important;
+  border-color: #94A3B8;
+}
+
+.filters-prompt:active {
+  background: #E2E8F0 !important;
+  transform: scale(0.98);
+}
+
+.prompt-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.prompt-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #EEF2FF;
+  border-radius: 8px;
+  color: #6366F1;
+}
+
+.prompt-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.prompt-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.prompt-subtitle {
+  font-size: 12px;
+  color: #6B7280;
+}
+
+.tap-hint {
+  font-size: 10px;
+  color: #9CA3AF;
+  background: #E5E7EB;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 500;
 }
 
 .places-list {
@@ -58,15 +141,23 @@
 
 .error-container {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px;
   text-align: center;
+  padding: 60px 20px;
+  height: 40vh;
 }
 
 .error-container p {
   color: #DC2626;
   font-size: 16px;
+  margin: 0;
+  line-height: 1.5;
+  background-color: #FEF2F2;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #FECACA;
 }
 
 /* Filter Modal Styles */

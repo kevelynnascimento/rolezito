@@ -18,7 +18,6 @@ import {
   IonFab,
   IonFabButton,
   IonToast,
-  IonSpinner,
   IonRefresher,
   IonRefresherContent,
   RefresherEventDetail,
@@ -32,6 +31,7 @@ import {
 import { PlaceCard } from '../components/PlaceCard';
 import { AdBanner } from '../components/AdBanner';
 import { DiscoverHeader } from '../components/DiscoverHeader';
+import { PlaceSkeleton } from '../components/PlaceSkeleton';
 import { Place, PlaceType } from '../types/place';
 import { usePlacesAndEvents } from '../hooks/usePlaceEvents';
 import './DiscoverScreen.css';
@@ -48,7 +48,7 @@ export const DiscoverScreen: React.FC = () => {
   const [selectedType, setSelectedType] = useState<PlaceType | 'all'>('all');
 
   // Busca places e eventos usando o hook
-  const { places, loading, error } = usePlacesAndEvents({
+  const { places, loading, refreshing, error, refresh } = usePlacesAndEvents({
     category: selectedCategory,
     type: selectedType,
   });
@@ -105,17 +105,18 @@ export const DiscoverScreen: React.FC = () => {
     );
   };
 
-  // Função para limpar filtros
-  const clearFilters = () => {
-    setSelectedCategory(undefined);
-    setSelectedVibes([]);
-    setPraAgora(false);
-    setSelectedType('all');
-  };
-
   // Função para obter os filtros ativos
   const getActiveFilters = () => {
     const filters = [];
+    
+    if (praAgora) {
+      filters.push({
+        id: 'pra-agora',
+        label: '⚡ Aberto agora',
+        type: 'praAgora',
+        value: 'true'
+      });
+    }
     
     if (selectedType !== 'all') {
       filters.push({
@@ -176,14 +177,15 @@ export const DiscoverScreen: React.FC = () => {
     console.log('Anúncio clicado');
   };
 
-  const handleRefresh = (event: CustomEvent<RefresherEventDetail>) => {
-    setTimeout(() => {
-      event.detail.complete();
-    }, 1000);
+  const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
+    await refresh();
+    event.detail.complete();
   };
 
   const removeFilter = (filter: { type: string; value: string }) => {
-    if (filter.type === 'category') {
+    if (filter.type === 'praAgora') {
+      setPraAgora(false);
+    } else if (filter.type === 'category') {
       setSelectedCategory(undefined);
       setSelectedVibes([]);
     } else if (filter.type === 'vibe') {
@@ -204,53 +206,50 @@ export const DiscoverScreen: React.FC = () => {
 
       <IonContent className="discover-content">
         <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
-          <IonRefresherContent />
+          <IonRefresherContent
+            pullingText="Puxe para atualizar..."
+            refreshingText="Carregando..."
+            pullingIcon="arrow-down-outline"
+            refreshingSpinner="crescent"
+          />
         </IonRefresher>
 
         {/* Seção de feedback dos filtros */}
-        {(getActiveFilters().length > 0 || praAgora) && (
-          <div className="filters-feedback">
+        {getActiveFilters().length > 0 ? (
+          <div className="filters-feedback" onClick={() => setFilterVisible(true)}>
             <div className="active-filters">
-              {praAgora && (
-                <IonChip 
-                  className="filter-chip"
-                  color="primary"
-                  onClick={() => setPraAgora(false)}
-                >
-                  <span>⚡ Aberto agora</span>
-                  <IonIcon icon={closeCircleOutline} />
-                </IonChip>
-              )}
-
               {getActiveFilters().map((filter) => (
                 <IonChip 
                   key={filter.id}
                   className="filter-chip"
                   color="primary"
-                  onClick={() => removeFilter(filter)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeFilter(filter);
+                  }}
                 >
                   <span>{filter.label}</span>
                   <IonIcon icon={closeCircleOutline} />
                 </IonChip>
               ))}
-
-              {(getActiveFilters().length > 0 || praAgora) && (
-                <IonButton 
-                  fill="clear" 
-                  size="small" 
-                  className="clear-button"
-                  onClick={clearFilters}
-                >
-                  Limpar
-                </IonButton>
-              )}
             </div>
-            
             <div className="filters-count">
-              {praAgora ? 
-                `Buscando lugares abertos${getActiveFilters().length > 0 ? ` • ${getActiveFilters().length} filtro${getActiveFilters().length > 1 ? 's' : ''} ativo${getActiveFilters().length > 1 ? 's' : ''}` : ''}` :
-                `${getActiveFilters().length} filtro${getActiveFilters().length > 1 ? 's' : ''} ativo${getActiveFilters().length > 1 ? 's' : ''}`
-              }
+              <span className="filters-text">
+                {getActiveFilters().length} filtro{getActiveFilters().length > 1 ? 's' : ''} ativo{getActiveFilters().length > 1 ? 's' : ''}
+              </span>
+              <span className="tap-hint">Toque para editar filtros</span>
+            </div>
+          </div>
+        ) : (
+          <div className="filters-prompt" onClick={() => setFilterVisible(true)}>
+            <div className="prompt-content">
+              <div className="prompt-icon">
+                <IonIcon icon={filterOutline} />
+              </div>
+              <div className="prompt-text">
+                <span className="prompt-title">Filtrar resultados</span>
+                <span className="prompt-subtitle">Encontre exatamente o que você procura</span>
+              </div>
             </div>
           </div>
         )}
@@ -258,14 +257,13 @@ export const DiscoverScreen: React.FC = () => {
         {/* Lista de places */}
         <div className="places-list">
           {loading ? (
-            <div className="loading-container">
-              <IonSpinner name="crescent" />
-              <p>Carregando places e eventos...</p>
-            </div>
+            <PlaceSkeleton count={6} />
           ) : error ? (
             <div className="error-container">
               <p>Erro: {error}</p>
             </div>
+          ) : refreshing ? (
+            <PlaceSkeleton count={3} />
           ) : (
             createListWithAds().map((item, idx) => {
               if (item.type === 'ad') {
