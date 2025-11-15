@@ -156,16 +156,19 @@ export const DiscoverScreen: React.FC = () => {
   };
 
   // Função para criar lista com anúncios intercalados
+  // Mostra um banner a cada 3 lugares para facilitar visualização
   const createListWithAds = () => {
     const listWithAds: Array<{ type: 'place' | 'ad'; data?: Place; adId?: string }> = [];
+    const AD_FREQUENCY = 3; // Banner a cada 3 lugares
     
     places.forEach((place, index) => {
       listWithAds.push({ type: 'place', data: place });
       
-      if ((index + 1) % 5 === 0 && index + 1 < places.length) {
+      // Adiciona banner após cada grupo de lugares (exceto após o último)
+      if ((index + 1) % AD_FREQUENCY === 0 && index + 1 < places.length) {
         listWithAds.push({ 
           type: 'ad', 
-          adId: `ad-${Math.floor((index + 1) / 5)}` 
+          adId: `ad-${Math.floor((index + 1) / AD_FREQUENCY)}` 
         });
       }
     });

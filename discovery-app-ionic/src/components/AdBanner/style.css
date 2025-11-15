@@ -5,13 +5,34 @@
   color: white;
   border: none;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-height: 100px;
 }
 
 .ad-content {
   padding: 16px !important;
   display: flex;
   align-items: center;
+  justify-content: center;
+}
+
+.ad-container {
+  width: 100%;
+  position: relative;
+  min-height: 80px;
+}
+
+/* Google AdSense */
+.adsbygoogle {
+  width: 100%;
+  min-height: 80px;
+}
+
+/* Fallback quando o anúncio não carrega */
+.ad-fallback {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
+  width: 100%;
 }
 
 .ad-text h3 {
@@ -35,4 +56,5 @@
   padding: 6px 12px;
   border-radius: 16px;
   color: white;
+  white-space: nowrap;
 }

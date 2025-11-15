@@ -9,10 +9,12 @@ import {
   IonRefresherContent,
   RefresherEventDetail,
 } from '@ionic/react';
+import { AdBanner } from '../../components/AdBanner';
 import { PlaceSkeleton } from '../../components/PlaceSkeleton';
 import { useFavorites } from '../../hooks/useFavorites';
 import './style.css';
 import { PlaceCard } from '../../components/PlaceCard';
+import { Place } from '../../types/place';
 
 export const FavoritesScreen: React.FC = () => {
   const { favorites, loading, refreshing, error, refresh } = useFavorites();
@@ -20,6 +22,31 @@ export const FavoritesScreen: React.FC = () => {
   const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
     await refresh();
     event.detail.complete();
+  };
+
+  // Função para criar lista com anúncios intercalados
+  // Mostra um banner a cada 3 lugares para facilitar visualização
+  const createListWithAds = () => {
+    const listWithAds: Array<{ type: 'place' | 'ad'; data?: Place; adId?: string }> = [];
+    const AD_FREQUENCY = 3; // Banner a cada 3 lugares
+    
+    favorites.forEach((place, index) => {
+      listWithAds.push({ type: 'place', data: place });
+      
+      // Adiciona banner após cada grupo de lugares (exceto após o último)
+      if ((index + 1) % AD_FREQUENCY === 0 && index + 1 < favorites.length) {
+        listWithAds.push({ 
+          type: 'ad', 
+          adId: `favorites-ad-${Math.floor((index + 1) / AD_FREQUENCY)}` 
+        });
+      }
+    });
+    
+    return listWithAds;
+  };
+
+  const handleAdPress = () => {
+    console.log('Anúncio clicado na página de favoritos');
   };
 
   return (
@@ -50,12 +77,24 @@ export const FavoritesScreen: React.FC = () => {
           ) : refreshing ? (
             <PlaceSkeleton count={3} />
           ) : favorites.length > 0 ? (
-            favorites.map((place) => (
-              <PlaceCard
-                key={place.id}
-                place={place}
-              />
-            ))
+            createListWithAds().map((item, idx) => {
+              if (item.type === 'ad') {
+                return (
+                  <AdBanner
+                    key={item.adId}
+                    adId={item.adId}
+                    onPress={handleAdPress}
+                  />
+                );
+              } else {
+                return (
+                  <PlaceCard
+                    key={`favorite-${item.data!.id}-${idx}`}
+                    place={item.data!}
+                  />
+                );
+              }
+            })
           ) : (
             <div className="empty-state">
               <div className="empty-icon">💜</div>
