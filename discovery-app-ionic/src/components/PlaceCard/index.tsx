@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   IonCard,
   IonCardContent,
@@ -16,6 +17,7 @@ interface Props {
 }
 
 export const PlaceCard: React.FC<Props> = ({ place }) => {
+  const history = useHistory();
   const [imageError, setImageError] = useState(false);
   const isOpen = place.status === 'Aberto';
   const isEvent = place.type === PlaceType.EVENT;
@@ -39,8 +41,12 @@ export const PlaceCard: React.FC<Props> = ({ place }) => {
     return getSolidColorImage(90, 120, colorIndex);
   };
 
+  const handleCardClick = () => {
+    history.push(`/place/${place.id}`);
+  };
+
   return (
-    <IonCard className="place-card">
+    <IonCard className="place-card" onClick={handleCardClick} button>
       <div className="place-card-content">
         {/* Badge para tipo */}
         <div className={`type-badge ${isEvent ? 'event-badge' : 'local-badge'}`}>

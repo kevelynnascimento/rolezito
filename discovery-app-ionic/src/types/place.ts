@@ -14,4 +14,10 @@ export interface Place {
   status: 'Aberto' | 'Fechado';
   eventDate?: string; // Para eventos
   eventTime?: string; // Para eventos
+  description?: string;
+  address?: string;
+  phone?: string;
+  website?: string;
+  openingHours?: string;
+  vibes?: string[];
 }

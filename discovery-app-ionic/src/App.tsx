@@ -33,6 +33,7 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import './theme/light-mode-override.css';
 import TabNavigation from './components/TabNavigation';
+import { PlaceDetailScreen } from './pages/PlaceDetailScreen';
 
 setupIonicReact({
   mode: 'ios', // Força um visual mais moderno
@@ -45,6 +46,7 @@ const App: React.FC = () => (
         <Route path="/tabs">
           <TabNavigation />
         </Route>
+        <Route path="/place/:id" component={PlaceDetailScreen} exact />
         <Route exact path="/">
           <Redirect to="/tabs/discover" />
         </Route>
