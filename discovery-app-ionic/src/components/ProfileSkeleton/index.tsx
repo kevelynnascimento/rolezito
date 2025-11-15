@@ -1,6 +1,6 @@
 import React from 'react';
 import { IonSkeletonText, IonCard, IonCardContent, IonAvatar, IonList, IonItem } from '@ionic/react';
-import './ProfileSkeleton.css';
+import './style.css';
 
 export const ProfileSkeleton: React.FC = () => {
   return (

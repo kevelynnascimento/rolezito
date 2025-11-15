@@ -28,13 +28,13 @@ import {
   checkmarkOutline,
   closeCircleOutline 
 } from 'ionicons/icons';
-import { PlaceCard } from '../components/PlaceCard';
-import { AdBanner } from '../components/AdBanner';
-import { DiscoverHeader } from '../components/DiscoverHeader';
-import { PlaceSkeleton } from '../components/PlaceSkeleton';
-import { Place, PlaceType } from '../types/place';
-import { usePlacesAndEvents } from '../hooks/usePlaceEvents';
-import './DiscoverScreen.css';
+import { AdBanner } from '../../components/AdBanner';
+import { DiscoverHeader } from '../../components/DiscoverHeader';
+import { PlaceSkeleton } from '../../components/PlaceSkeleton';
+import { Place, PlaceType } from '../../types/place';
+import { usePlacesAndEvents } from '../../hooks/usePlaceEvents';
+import './style.css';
+import { PlaceCard } from '../../components/PlaceCard';
 
 export const DiscoverScreen: React.FC = () => {
   const [filterVisible, setFilterVisible] = useState(false);

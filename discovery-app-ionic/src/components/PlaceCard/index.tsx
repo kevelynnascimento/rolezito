@@ -6,9 +6,9 @@ import {
   IonIcon,
 } from '@ionic/react';
 import { locationOutline } from 'ionicons/icons';
-import { Place, PlaceType } from '../types/place';
-import { getSolidColorImage } from '../utils/imageUtils';
-import './PlaceCard.css';
+import './style.css';
+import { Place, PlaceType } from '../../types/place';
+import { getSolidColorImage } from '../../utils/imageUtils';
 
 interface Props {
   place: Place;

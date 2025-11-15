@@ -1,6 +1,6 @@
 import React from 'react';
 import { IonCard, IonCardContent } from '@ionic/react';
-import './AdBanner.css';
+import './style.css';
 
 interface Props {
   adId?: string;

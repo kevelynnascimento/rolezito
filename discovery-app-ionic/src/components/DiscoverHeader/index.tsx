@@ -19,7 +19,7 @@ import {
   closeOutline,
   notificationsOutline,
 } from 'ionicons/icons';
-import './DiscoverHeader.css';
+import './style.css';
 
 interface Props {
   useUserLocation: boolean;

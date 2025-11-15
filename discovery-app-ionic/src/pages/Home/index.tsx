@@ -1,4 +1,4 @@
-import { DiscoverScreen } from './DiscoverScreen';
+import { DiscoverScreen } from '../DiscoverScreen';
 
 const Home: React.FC = () => {
   return <DiscoverScreen />;

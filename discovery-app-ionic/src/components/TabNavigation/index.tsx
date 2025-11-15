@@ -14,10 +14,10 @@ import {
   personOutline
 } from 'ionicons/icons';
 
-import { DiscoverScreen } from '../pages/DiscoverScreen';
-import { FavoritesScreen } from '../pages/FavoritesScreen';
-import { ProfileScreen } from '../pages/ProfileScreen';
-import './TabNavigation.css';
+import { DiscoverScreen } from '../../pages/DiscoverScreen';
+import { FavoritesScreen } from '../../pages/FavoritesScreen';
+import { ProfileScreen } from '../../pages/ProfileScreen';
+import './style.css';
 
 const TabNavigation: React.FC = () => {
   return (

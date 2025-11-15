@@ -9,10 +9,10 @@ import {
   IonRefresherContent,
   RefresherEventDetail,
 } from '@ionic/react';
-import { PlaceCard } from '../components/PlaceCard';
-import { PlaceSkeleton } from '../components/PlaceSkeleton';
-import { useFavorites } from '../hooks/useFavorites';
-import './FavoritesScreen.css';
+import { PlaceSkeleton } from '../../components/PlaceSkeleton';
+import { useFavorites } from '../../hooks/useFavorites';
+import './style.css';
+import { PlaceCard } from '../../components/PlaceCard';
 
 export const FavoritesScreen: React.FC = () => {
   const { favorites, loading, refreshing, error, refresh } = useFavorites();

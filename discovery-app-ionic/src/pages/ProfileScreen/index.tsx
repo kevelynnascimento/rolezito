@@ -28,9 +28,9 @@ import {
   helpCircleOutline,
   informationCircleOutline 
 } from 'ionicons/icons';
-import { ProfileSkeleton } from '../components/ProfileSkeleton';
-import { useProfile } from '../hooks/useProfile';
-import './ProfileScreen.css';
+import { ProfileSkeleton } from '../../components/ProfileSkeleton';
+import { useProfile } from '../../hooks/useProfile';
+import './style.css';
 
 export const ProfileScreen: React.FC = () => {
   const { 

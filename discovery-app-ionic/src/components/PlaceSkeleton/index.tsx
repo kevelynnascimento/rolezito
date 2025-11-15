@@ -1,6 +1,6 @@
 import React from 'react';
 import { IonSkeletonText, IonCard, IonCardContent } from '@ionic/react';
-import './PlaceSkeleton.css';
+import './style.css';
 
 interface PlaceSkeletonProps {
   count?: number;
