@@ -63,21 +63,6 @@
   font-weight: 600;
 }
 
-/* Active state indicator */
-.custom-tab-button.tab-selected::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 48px;
-  height: 48px;
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 24px;
-  z-index: -1;
-  transition: all 0.2s ease;
-}
-
 /* Hover effect for web */
 @media (hover: hover) {
   .custom-tab-button:hover:not(.tab-selected) .tab-icon-outline {
