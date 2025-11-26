@@ -13,58 +13,80 @@ declare global {
   }
 }
 
-export const AdBanner: React.FC<Props> = ({ onPress }) => {
+export const AdBanner: React.FC<Props> = ({ adId }) => {
   const adRef = useRef<HTMLDivElement>(null);
-  const [showFallback, setShowFallback] = useState(true);
+  const [adLoaded, setAdLoaded] = useState(false);
+  const [adError, setAdError] = useState(false);
 
   useEffect(() => {
-    // Verifica se o Google AdSense está configurado
-    const isAdSenseConfigured = false; // Mude para true quando configurar
-    
-    if (!isAdSenseConfigured) {
-      setShowFallback(true);
-      return;
-    }
+    const loadAd = async () => {
+      try {
+        if (!document.querySelector('script[src*="adsbygoogle.js"]')) {
+          const script = document.createElement('script');
+          script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX';
+          script.async = true;
+          script.crossOrigin = 'anonymous';
+          document.head.appendChild(script);
+          
+          await new Promise((resolve, reject) => {
+            script.onload = resolve;
+            script.onerror = reject;
+          });
+        }
 
-    try {
-      // Carrega o Google AdSense apenas se ainda não foi carregado
-      if (!document.querySelector('script[src*="adsbygoogle.js"]')) {
-        const script = document.createElement('script');
-        script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
-        script.async = true;
-        script.crossOrigin = 'anonymous';
-        script.setAttribute('data-ad-client', 'ca-pub-XXXXXXXXXXXXXXXX');
-        document.head.appendChild(script);
+        if (window.adsbygoogle && adRef.current) {
+          try {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+            setAdLoaded(true);
+          } catch (e) {
+            console.error('Erro ao inicializar anúncio:', e);
+            setAdError(true);
+          }
+        }
+      } catch (error) {
+        console.error('Erro ao carregar Google AdSense:', error);
+        setAdError(true);
       }
+    };
 
-      // Inicializa o anúncio
-      if (window.adsbygoogle && adRef.current) {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-        setShowFallback(false);
+    const timer = setTimeout(() => {
+      if (!adLoaded) {
+        loadAd();
       }
-    } catch (error) {
-      console.error('Erro ao carregar Google AdSense:', error);
-      setShowFallback(true);
-    }
-  }, []);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [adId, adLoaded]);
 
   return (
-    <IonCard className="ad-banner" button={!!onPress} onClick={onPress}>
+    <IonCard className="ad-banner">
       <IonCardContent className="ad-content">
-        {showFallback ? (
-          // Mostra o banner de exemplo quando AdSense não está configurado
+        {!adLoaded || adError ? (
           <div className="ad-fallback">
-            <div className="ad-text">
-              <h3>🎯 Espaço Publicitário</h3>
-              <p>Anuncie aqui e alcance milhares de usuários!</p>
-            </div>
-            <div className="ad-cta">
-              <span>Saiba mais</span>
+            <div className="ad-label">Publicidade</div>
+            <div className="ad-mock">
+              <div className="ad-mock-header">
+                <div className="ad-mock-icon"></div>
+                <div className="ad-mock-text">
+                  <div className="ad-mock-title">Anúncio Patrocinado</div>
+                  <div className="ad-mock-url">www.exemplo.com</div>
+                </div>
+              </div>
+              <div className="ad-mock-content">
+                <div className="ad-mock-image"></div>
+                <div className="ad-mock-body">
+                  <div className="ad-mock-headline">Descubra ofertas incríveis perto de você</div>
+                  <div className="ad-mock-description">Produtos e serviços selecionados especialmente para você. Clique e confira!</div>
+                </div>
+              </div>
+              <div className="ad-mock-footer">
+                <span className="ad-mock-cta">Saiba mais</span>
+              </div>
             </div>
           </div>
         ) : (
-          // Mostra o Google AdSense quando configurado
           <div className="ad-container" ref={adRef}>
+            <div className="ad-label">Publicidade</div>
             <ins
               className="adsbygoogle"
               style={{ display: 'block' }}

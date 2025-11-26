@@ -6,12 +6,6 @@
   overflow: hidden;
   height: 120px;
   border: 1px solid #F1F5F9;
-  transition: all 0.2s ease;
-}
-
-.place-card:hover {
-  box-shadow: 0 6px 20px rgba(167, 139, 250, 0.15);
-  transform: translateY(-1px);
 }
 
 .place-card-content {
