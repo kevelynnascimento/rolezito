@@ -106,7 +106,6 @@ export const DiscoverHeader: React.FC<Props> = ({
                 setModalVisible(true);
               }
             }}
-            disabled={useUserLocation}
           >
             <IonIcon icon={locationOutline} className="location-icon" />
             <div className="location-text">
