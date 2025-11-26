@@ -62,33 +62,30 @@ export const DiscoverHeader: React.FC<Props> = ({
     <>
       <IonHeader className="discover-header">
         <IonToolbar className="header-toolbar">
-          {/* Toggle buttons */}
+          {/* Toggle button */}
           <div className="header-controls">
-            <div className="toggle-group">
-              <IonButton
-                fill={useUserLocation ? 'solid' : 'outline'}
-                color={useUserLocation ? 'primary' : 'medium'}
-                size="small"
-                className={`toggle-button left ${useUserLocation ? 'active' : ''}`}
-                onClick={() => setUseUserLocation(true)}
-              >
-                <IonIcon icon={locationOutline} slot="start" />
-                Localização
-              </IonButton>
-              <IonButton
-                fill={!useUserLocation ? 'solid' : 'outline'}
-                color={!useUserLocation ? 'primary' : 'medium'}
-                size="small"
-                className={`toggle-button right ${!useUserLocation ? 'active' : ''}`}
-                onClick={() => {
-                  setUseUserLocation(false);
-                  setCityFilter('');
-                  setModalVisible(true);
-                }}
-              >
-                Cidade
-                <IonIcon icon={chevronDownOutline} slot="end" />
-              </IonButton>
+            <div className="toggle-container">
+              <div className="toggle-track">
+                <div className={`toggle-slider ${useUserLocation ? 'left' : 'right'}`} />
+                <button
+                  className={`toggle-option ${useUserLocation ? 'active' : ''}`}
+                  onClick={() => setUseUserLocation(true)}
+                >
+                  <IonIcon icon={locationOutline} />
+                  <span>Localização</span>
+                </button>
+                <button
+                  className={`toggle-option ${!useUserLocation ? 'active' : ''}`}
+                  onClick={() => {
+                    setUseUserLocation(false);
+                    setCityFilter('');
+                    setModalVisible(true);
+                  }}
+                >
+                  <span>Cidade</span>
+                  <IonIcon icon={chevronDownOutline} />
+                </button>
+              </div>
             </div>
 
             <IonButton fill="clear" className="notification-button">

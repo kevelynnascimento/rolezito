@@ -16,41 +16,74 @@
   width: 100%;
 }
 
-.toggle-group {
+.toggle-container {
+  flex: 1;
+  max-width: 280px;
+}
+
+.toggle-track {
+  position: relative;
   display: flex;
   background: #F3F4F6;
-  border-radius: 8px;
-  padding: 2px;
-  gap: 0;
+  border-radius: 10px;
+  padding: 4px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-.toggle-button {
-  --border-radius: 6px;
-  --padding-start: 12px;
-  --padding-end: 12px;
-  --padding-top: 8px;
-  --padding-bottom: 8px;
-  margin: 0;
+.toggle-slider {
+  position: absolute;
+  top: 4px;
+  height: calc(100% - 8px);
+  width: calc(50% - 4px);
+  background: linear-gradient(135deg, #A78BFA 0%, #8B5CF6 100%);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(139, 92, 246, 0.3), 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+.toggle-slider.left {
+  transform: translateX(0);
+}
+
+.toggle-slider.right {
+  transform: translateX(calc(100% + 4px));
+}
+
+.toggle-option {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
   font-size: 13px;
   font-weight: 500;
-  height: auto;
+  color: #6B7280;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  z-index: 2;
+  position: relative;
 }
 
-.toggle-button.left {
-  --border-top-right-radius: 0;
-  --border-bottom-right-radius: 0;
+.toggle-option ion-icon {
+  font-size: 16px;
 }
 
-.toggle-button.right {
-  --border-top-left-radius: 0;
-  --border-bottom-left-radius: 0;
-  margin-left: -1px;
-}
-
-.toggle-button.active {
-  --background: #A78BFA;
-  --color: #fff;
+.toggle-option.active {
+  color: #fff;
   font-weight: 600;
+}
+
+.toggle-option:not(.active):hover {
+  color: #4B5563;
+}
+
+.toggle-option:active {
+  transform: scale(0.98);
 }
 
 .notification-button {
