@@ -419,9 +419,6 @@ export const DiscoverScreen: React.FC = () => {
                 step={1}
                 value={distance}
                 onIonChange={e => setDistance(e.detail.value as number)}
-                pin={true}
-                ticks={true}
-                snaps={true}
               >
                 <IonLabel slot="start">1 km</IonLabel>
                 <IonLabel slot="end">20 km</IonLabel>
