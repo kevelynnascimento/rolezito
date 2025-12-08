@@ -99,7 +99,7 @@ export const DiscoverHeader: React.FC<Props> = ({
         <div className="location-info">
           <IonButton
             fill="clear"
-            className="location-card"
+            className={`location-card ${useUserLocation ? 'no-click' : ''}`}
             onClick={() => {
               if (!useUserLocation) {
                 setCityFilter('');

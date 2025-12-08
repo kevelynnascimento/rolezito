@@ -176,3 +176,7 @@
   color: #6B7280;
   font-style: italic;
 }
+
+.location-card.no-click {
+  pointer-events: none;
+}
