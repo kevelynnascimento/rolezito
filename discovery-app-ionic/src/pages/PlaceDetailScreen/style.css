@@ -40,19 +40,19 @@
   top: 16px;
   left: 16px;
   padding: 6px 12px;
-  border-radius: 6px;
-  font-weight: 600;
+  border-radius: 8px;
+  font-weight: bold;
   font-size: 0.75rem;
   letter-spacing: 0.5px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .type-badge-overlay.event-badge {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-color: #FF6B35;
 }
 
 .type-badge-overlay.local-badge {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background-color: #10B981;
 }
 
 .type-badge-text {
