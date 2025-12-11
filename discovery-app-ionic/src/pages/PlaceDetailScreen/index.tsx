@@ -193,7 +193,7 @@ export const PlaceDetailScreen: React.FC = () => {
           {/* Tags/Vibes */}
           {place?.vibes && place?.vibes.length > 0 && (
             <div className="info-section">
-              <h3 className="section-title">Vibes</h3>
+              <h3 className="section-title">Estilos</h3>
               <div className="vibes-container">
                 {place?.vibes.map((vibe: string, index: number) => (
                   <IonChip key={index} color="primary" className="vibe-chip">
