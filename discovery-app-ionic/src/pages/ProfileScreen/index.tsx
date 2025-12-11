@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import {
   IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
   IonContent,
   IonCard,
   IonCardContent,
@@ -15,9 +12,6 @@ import {
   IonList,
   IonIcon,
   IonAvatar,
-  IonRefresher,
-  IonRefresherContent,
-  RefresherEventDetail,
 } from '@ionic/react';
 import { 
   personOutline, 
@@ -31,6 +25,8 @@ import {
 import { ProfileSkeleton } from '../../components/ProfileSkeleton';
 import { useProfile } from '../../hooks/useProfile';
 import './style.css';
+import { PageHeader } from '../../components/PageHeader';
+import { Refresher } from '../../components/Refresher';
 
 export const ProfileScreen: React.FC = () => {
   const { 
@@ -72,9 +68,8 @@ export const ProfileScreen: React.FC = () => {
     console.log('Logout');
   };
 
-  const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
+  const handleRefresh = async () => {
     await refresh();
-    event.detail.complete();
   };
 
   const handleInputChange = (field: 'name' | 'email' | 'phone', value: string) => {
@@ -85,21 +80,9 @@ export const ProfileScreen: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar color="primary">
-          <IonTitle>Perfil</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      
+      <PageHeader title="Perfil" />
       <IonContent className="profile-content">
-        <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
-          <IonRefresherContent
-            pullingText="Puxe para atualizar..."
-            refreshingText="Carregando..."
-            pullingIcon="arrow-down-outline"
-            refreshingSpinner="crescent"
-          />
-        </IonRefresher>
+      <Refresher onRefresh={handleRefresh} />
 
         {loading ? (
           <ProfileSkeleton />

@@ -18,9 +18,6 @@ import {
   IonFab,
   IonFabButton,
   IonToast,
-  IonRefresher,
-  IonRefresherContent,
-  RefresherEventDetail,
 } from '@ionic/react';
 import { 
   closeOutline, 
@@ -35,6 +32,7 @@ import { Place, PlaceType } from '../../types/place';
 import { usePlacesAndEvents } from '../../hooks/usePlaceEvents';
 import './style.css';
 import { PlaceCard } from '../../components/PlaceCard';
+import { Refresher } from '../../components/Refresher';
 
 export const DiscoverScreen: React.FC = () => {
   const [filterVisible, setFilterVisible] = useState(false);
@@ -180,9 +178,8 @@ export const DiscoverScreen: React.FC = () => {
     console.log('Anúncio clicado');
   };
 
-  const handleRefresh = async (event: CustomEvent<RefresherEventDetail>) => {
+  const handleRefresh = async () => {
     await refresh();
-    event.detail.complete();
   };
 
   const removeFilter = (filter: { type: string; value: string }) => {
@@ -208,14 +205,7 @@ export const DiscoverScreen: React.FC = () => {
       />
 
       <IonContent className="discover-content">
-        <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
-          <IonRefresherContent
-            pullingText="Puxe para atualizar..."
-            refreshingText="Carregando..."
-            pullingIcon="arrow-down-outline"
-            refreshingSpinner="crescent"
-          />
-        </IonRefresher>
+        <Refresher onRefresh={handleRefresh} />
 
         {/* Seção de feedback dos filtros */}
         {getActiveFilters().length > 0 ? (

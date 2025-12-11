@@ -173,7 +173,7 @@ ion-item:not([color]) {
 
 /* Garante que o tab bar seja sempre claro na parte inferior */
 ion-tab-bar {
-  background: linear-gradient(135deg, #A78BFA 0%, #7C5CFA 100%) !important;
+  background: var(--ion-color-primary); 
 }
 
 /* Melhora a aparência dos botões */

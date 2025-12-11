@@ -1,16 +1,11 @@
 import React, { useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {
   IonPage,
   IonContent,
-  IonHeader,
-  IonToolbar,
-  IonButtons,
-  IonBackButton,
   IonIcon,
   IonChip,
   IonButton,
-  IonSpinner,
   IonFab,
   IonFabButton,
 } from '@ionic/react';
@@ -21,12 +16,12 @@ import {
   timeOutline,
   heartOutline,
   heart,
-  shareOutline,
   calendarOutline,
 } from 'ionicons/icons';
 import { PlaceType } from '../../types/place';
 import './style.css';
 import { usePlaceDetail } from '../../hooks/usePlaceDetail';
+import { PageHeader } from '../../components/PageHeader';
 
 interface RouteParams {
   id: string;
@@ -34,26 +29,11 @@ interface RouteParams {
 
 export const PlaceDetailScreen: React.FC = () => {
   const { id } = useParams<RouteParams>();
-  const history = useHistory();
-  const { place, loading, error } = usePlaceDetail(id);
+  const { place } = usePlaceDetail(id);
   const [isFavorite, setIsFavorite] = useState(false);
   const [imageError, setImageError] = useState(false);
 
   const isEvent = place?.type === PlaceType.EVENT;
-
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator
-        .share({
-          title: place?.title || '',
-          text: `Confira: ${place?.title}`,
-          url: window.location.href,
-        })
-        .catch(() => {
-          // User cancelled share
-        });
-    }
-  };
 
   const handleFavoriteToggle = () => {
     setIsFavorite(!isFavorite);
@@ -61,7 +41,7 @@ export const PlaceDetailScreen: React.FC = () => {
 
   const handleDirections = () => {
     if (place?.address) {
-      const query = encodeURIComponent(place.address);
+      const query = encodeURIComponent(place?.address);
       window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, '_blank');
     }
   };
@@ -69,83 +49,32 @@ export const PlaceDetailScreen: React.FC = () => {
   const formatEventDateTime = () => {
     if (!isEvent || !place?.eventDate || !place?.eventTime) return '';
 
-    const date = new Date(place.eventDate);
+    const date = new Date(place?.eventDate);
     const dateStr = date.toLocaleDateString('pt-BR', {
       day: '2-digit',
       month: 'long',
       year: 'numeric',
     });
 
-    return `${dateStr} às ${place.eventTime}`;
+    return `${dateStr} às ${place?.eventTime}`;
   };
 
   const formatOpeningHours = () => {
     if (!place?.openingHours) return 'Não disponível';
-    return place.openingHours;
+    return place?.openingHours;
   };
 
-  if (loading) {
-    return (
-      <IonPage>
-        <IonHeader>
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonBackButton defaultHref="/tabs/discover" />
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent className="place-detail-content">
-          <div className="loading-container">
-            <IonSpinner name="crescent" />
-          </div>
-        </IonContent>
-      </IonPage>
-    );
-  }
-
-  if (error || !place) {
-    return (
-      <IonPage>
-        <IonHeader>
-          <IonToolbar>
-            <IonButtons slot="start">
-              <IonBackButton defaultHref="/tabs/discover" />
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent className="place-detail-content">
-          <div className="error-container">
-            <p>{error || 'Local não encontrado'}</p>
-            <IonButton onClick={() => history.goBack()}>Voltar</IonButton>
-          </div>
-        </IonContent>
-      </IonPage>
-    );
-  }
-
-  const isOpen = place.status === 'Aberto';
+  const isOpen = place?.status === 'Aberto';
 
   return (
     <IonPage>
-      <IonHeader translucent>
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton defaultHref="/tabs/discover" />
-          </IonButtons>
-          <IonButtons slot="end">
-            <IonButton onClick={handleShare}>
-              <IonIcon icon={shareOutline} />
-            </IonButton>
-          </IonButtons>
-        </IonToolbar>
-      </IonHeader>
-
+      <PageHeader title="Detalhes" showBackButton/>
       <IonContent fullscreen className="place-detail-content">
         {/* Hero Image */}
         <div className="hero-image-container">
           <img
-            src={imageError ? 'https://via.placeholder.com/600x400' : place.image}
-            alt={place.title}
+            src={imageError ? 'https://via.placeholder.com/600x400' : place?.image}
+            alt={place?.title}
             className="hero-image"
             onError={() => setImageError(true)}
           />
@@ -160,31 +89,31 @@ export const PlaceDetailScreen: React.FC = () => {
         <div className="detail-content">
           {/* Title and Status */}
           <div className="title-section">
-            <h1 className="place-title">{place.title}</h1>
+            <h1 className="place-title">{place?.title}</h1>
             <IonChip
               className={`status-chip ${isOpen ? 'status-open' : 'status-closed'}`}
               color={isOpen ? 'success' : 'danger'}
             >
-              {place.status}
+              {place?.status}
             </IonChip>
           </div>
 
-          <p className="place-category">{place.tag}</p>
+          <p className="place-category">{place?.tag}</p>
 
           {/* Rating and Distance */}
           <div className="info-row">
             <div className="rating-container">
               <span className="rating-star">⭐</span>
-              <span className="rating-text">{place.rating.toFixed(1)}</span>
+              <span className="rating-text">{place?.rating.toFixed(1)}</span>
             </div>
             <div className="distance-container">
               <IonIcon icon={locationOutline} className="info-icon" />
-              <span className="distance-text">{place.distance}</span>
+              <span className="distance-text">{place?.distance}</span>
             </div>
           </div>
 
           {/* Event Date/Time - Only for events */}
-          {isEvent && place.eventDate && place.eventTime && (
+          {isEvent && place?.eventDate && place?.eventTime && (
             <div className="info-section">
               <div className="section-header">
                 <IonIcon icon={calendarOutline} className="section-icon" />
@@ -195,21 +124,21 @@ export const PlaceDetailScreen: React.FC = () => {
           )}
 
           {/* Description */}
-          {place.description && (
+          {place?.description && (
             <div className="info-section">
               <h3 className="section-title">Sobre</h3>
-              <p className="section-text">{place.description}</p>
+              <p className="section-text">{place?.description}</p>
             </div>
           )}
 
           {/* Address */}
-          {place.address && (
+          {place?.address && (
             <div className="info-section">
               <div className="section-header">
                 <IonIcon icon={locationOutline} className="section-icon" />
                 <h3 className="section-title">Endereço</h3>
               </div>
-              <p className="section-text">{place.address}</p>
+              <p className="section-text">{place?.address}</p>
               <IonButton
                 fill="outline"
                 size="small"
@@ -238,19 +167,19 @@ export const PlaceDetailScreen: React.FC = () => {
               <IonIcon icon={callOutline} className="section-icon" />
               <h3 className="section-title">Contato</h3>
             </div>
-            {place.phone && (
+            {place?.phone && (
               <div className="contact-item">
                 <IonIcon icon={callOutline} className="contact-icon" />
-                <a href={`tel:${place.phone}`} className="contact-link">
-                  {place.phone}
+                <a href={`tel:${place?.phone}`} className="contact-link">
+                  {place?.phone}
                 </a>
               </div>
             )}
-            {place.website && (
+            {place?.website && (
               <div className="contact-item">
                 <IonIcon icon={globeOutline} className="contact-icon" />
                 <a
-                  href={place.website}
+                  href={place?.website}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="contact-link"
@@ -262,11 +191,11 @@ export const PlaceDetailScreen: React.FC = () => {
           </div>
 
           {/* Tags/Vibes */}
-          {place.vibes && place.vibes.length > 0 && (
+          {place?.vibes && place?.vibes.length > 0 && (
             <div className="info-section">
               <h3 className="section-title">Vibes</h3>
               <div className="vibes-container">
-                {place.vibes.map((vibe: string, index: number) => (
+                {place?.vibes.map((vibe: string, index: number) => (
                   <IonChip key={index} color="primary" className="vibe-chip">
                     {vibe}
                   </IonChip>
